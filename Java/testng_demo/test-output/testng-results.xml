@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="1" total="16" passed="15">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite1" duration-ms="70" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+    <groups>
+      <group name="p0">
+        <method signature="StandardTest.test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@28d25987]" name="test" class="com.vdcoding.testngDemo.tests.StandardTest"/>
+        <method signature="StandardTest.test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="test" class="com.vdcoding.testngDemo.tests.StandardTest"/>
+      </group> <!-- p0 -->
+      <group name="p1">
+        <method signature="StandardTest2.test1()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest2@5b275dab]" name="test1" class="com.vdcoding.testngDemo.tests.StandardTest2"/>
+        <method signature="StandardTest2.test2()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest2@5b275dab]" name="test2" class="com.vdcoding.testngDemo.tests.StandardTest2"/>
+      </group> <!-- p1 -->
+      <group name="p2">
+        <method signature="StandardTest3.test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest3@61832929]" name="test1" class="com.vdcoding.testngDemo.tests.StandardTest3"/>
+        <method signature="StandardTest3.test2()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest3@61832929]" name="test2" class="com.vdcoding.testngDemo.tests.StandardTest3"/>
+      </group> <!-- p2 -->
+      <group name="p3">
+        <method signature="StandardTest4.test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test1" class="com.vdcoding.testngDemo.tests.StandardTest4"/>
+        <method signature="StandardTest4.test2(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test2" class="com.vdcoding.testngDemo.tests.StandardTest4"/>
+        <method signature="StandardTest4.test3(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test3" class="com.vdcoding.testngDemo.tests.StandardTest4"/>
+        <method signature="StandardTest4.test4(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test4" class="com.vdcoding.testngDemo.tests.StandardTest4"/>
+      </group> <!-- p3 -->
+    </groups>
+    <test name="Regression1" duration-ms="40" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+      <class name="com.vdcoding.testngDemo.tests.StandardTest3">
+        <test-method status="PASS" signature="test2()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest3@61832929]" name="test2" duration-ms="10" started-at="2018-05-01T10:16:05Z" depends-on-methods="com.vdcoding.testngDemo.tests.StandardTest3.test1" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test2 -->
+        <test-method status="PASS" signature="test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest3@61832929]" name="test1" duration-ms="0" depends-on-groups="p1" started-at="2018-05-01T10:16:05Z" data-provider="dp2" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test1 -->
+        <test-method status="PASS" signature="test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest3@61832929]" name="test1" duration-ms="0" depends-on-groups="p1" started-at="2018-05-01T10:16:05Z" data-provider="dp2" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test1 -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest3 -->
+      <class name="com.vdcoding.testngDemo.tests.StandardTest4">
+        <test-method status="PASS" signature="test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test1" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="mydp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test1 -->
+        <test-method status="PASS" signature="test1(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test1" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="mydp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test1 -->
+        <test-method status="PASS" signature="test2(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test2" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="iterdp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test2 -->
+        <test-method status="PASS" signature="test2(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test2" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="iterdp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test2 -->
+        <test-method status="PASS" signature="test3(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test3" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="dprouter" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test3 -->
+        <test-method status="PASS" signature="test4(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest4@68c4039c]" name="test4" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="dprouter" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test4 -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest4 -->
+      <class name="com.vdcoding.testngDemo.tests.StandardTest">
+        <test-method status="PASS" signature="test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@28d25987]" name="test" duration-ms="10" started-at="2018-05-01T10:16:05Z" data-provider="dp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test -->
+        <test-method status="PASS" signature="test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@28d25987]" name="test" duration-ms="10" started-at="2018-05-01T10:16:05Z" data-provider="dp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest -->
+      <class name="com.vdcoding.testngDemo.tests.StandardTest2">
+        <test-method status="PASS" signature="test1()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest2@5b275dab]" name="test1" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test1 -->
+        <test-method status="PASS" signature="test2()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest2@5b275dab]" name="test2" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test2 -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest2 -->
+    </test> <!-- Regression1 -->
+    <test name="Regression2" duration-ms="10" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+      <class name="com.vdcoding.testngDemo.tests.StandardTest">
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="beforeClass" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="beforeTest()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="beforeTest" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeTest -->
+        <test-method status="PASS" signature="test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="test" duration-ms="10" started-at="2018-05-01T10:16:05Z" data-provider="dp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test -->
+        <test-method status="PASS" signature="test(int, int)[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="test" duration-ms="0" started-at="2018-05-01T10:16:05Z" data-provider="dp" finished-at="2018-05-01T10:16:05Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test -->
+        <test-method status="PASS" signature="afterTest()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="afterTest" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterTest -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="afterMethod" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="afterClass()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="afterClass" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterClass -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="afterMethod" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest -->
+    </test> <!-- Regression2 -->
+    <test name="notest" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+      <class name="com.vdcoding.testngDemo.tests.StandardTest">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="beforeSuite" is-config="true" duration-ms="10" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeSuite -->
+        <test-method status="PASS" signature="afterSuite()[pri:0, instance:com.vdcoding.testngDemo.tests.StandardTest@13deb50e]" name="afterSuite" is-config="true" duration-ms="0" started-at="2018-05-01T10:16:05Z" finished-at="2018-05-01T10:16:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterSuite -->
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest -->
+    </test> <!-- notest -->
+  </suite> <!-- Suite1 -->
+</testng-results>

@@ -1,0 +1,259 @@
+
+<!--<div class="row">-->
+    <div class="col-xs-20" sytle="margin-top:-10px">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">压测记录</h3>
+            </div>
+            <div class="box-body" id="div-table-container">
+                <table id="data-table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>数据总量</th>
+                            <!-- <th>数据构成</th> -->
+                            <th>并发数量</th>
+                            <th>Total RPS</th>
+                            <th>失败率</th>
+                            <th>图表记录</th>
+                            <th>报告</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="record-chart" class="iziModal">
+        <!-- <div class="charts-container"></div> -->
+        <div id="locust_record"></div>
+    </div>
+    <div id="data-struct" class="iziModal"></div>
+
+<script>
+    $("#data-struct").iziModal({
+	        title: "test",
+	        iconClass: 'icon-check',
+            overlayClose: true,
+	        headerColor: '#334c7b',
+	        width: 300
+	    });
+
+    function showStruct(struct){
+        class_mapping = {'0':'1V1课','12':'公开课'};
+        var tpl = '<div><strong>{0}</strong> - 课程数量:{1} 单课人数:{2}</div>'
+        var struct_info = '';
+        for(key in struct){
+            class_name = class_mapping[key];
+            class_count = struct[key][0];
+            user_per_class = struct[key][1];
+            struct_info += tpl.format(class_name, class_count, user_per_class);
+        }
+        $("#data-struct").iziModal('setTitle',struct_info);
+        $("#data-struct").iziModal('open');
+    }
+
+    $("#record-chart").iziModal({
+        title: "图表记录",
+        subtitle: "明细统计、曲线图、失败统计、异常统计",
+        iconClass: 'icon-chat',
+        overlayColor: 'rgba(255, 255, 255, 0.4)',
+        overlayClose: true,
+        headerColor: '#334c7b',
+        iconColor: '#00ffba',
+        width: '80%',
+        padding: 10,
+    });
+
+    var rpsChart;
+    var responseTimeChart;
+    var usersChart;
+    function showChart(id){
+        $('#record-chart').iziModal('open', function(){
+            $("#locust_record").data("record_id", id);
+        });
+        $.get({
+            url: "html/locust_record.html",
+            dataType: "html",
+            success: function(data){
+                $("#locust_record").html(data);
+                rpsChart = new LocustLineChart($(".charts-container"), "Total Requests per Second", ["RPS"], "reqs/s");
+                responseTimeChart = new LocustLineChart($(".charts-container"), "Average Response Time", ["Average Response Time"], "ms");
+                usersChart = new LocustLineChart($(".charts-container"), "Number of Users", ["Users"], "users");
+                resizeCharts();
+                renderCharts(id);
+            }
+        });
+        
+    }
+
+    $(document).on('closed', '#record-chart', function (e) {
+        $("#locust_record").html();
+        // clearCharts();
+        // initCharts();
+    });
+
+    function showChartLoading(){
+        rpsChart.showLoading();
+        responseTimeChart.showLoading();
+        usersChart.showLoading();
+    }
+
+    function hideChartLoading(){
+        rpsChart.hideLoading();
+        responseTimeChart.hideLoading();
+        usersChart.hideLoading();
+    }
+
+    function resizeCharts(){
+        rpsChart.resize();
+        responseTimeChart.resize();
+        usersChart.resize();
+    }
+
+    function clearCharts(){
+        rpsChart.clear();
+        responseTimeChart.clear();
+        usersChart.clear();
+    }
+
+    function initCharts(){
+        rpsChart.initChart();
+        responseTimeChart.initChart();
+        usersChart.initChart();
+    }
+
+    function renderCharts(id){
+        url_tpl = "http://172.16.16.72:8086/query?q=select+value+from+current_rps+where+id%3D'{0}'%3Bselect+value+from+avg_response_time+where+id%3D'{0}'%3Bselect+value+from+user_count+where+id%3D'{0}'&db=svcload"
+        showChartLoading();
+        $.ajax({
+            type: "GET",
+            url: url_tpl.format(id),
+            dataType: "json",
+            success: function (data) {
+                for (var i=0; i<data.results.length; i++) {
+                    if ('series' in data.results[i]){
+                        if (i==0){
+                            rps_data = data.results[0].series[0].values;
+                            rpsChart.addValue(rps_data);
+                        }
+                        else if(i==1){
+                            reptime_data = data.results[1].series[0].values;
+                            responseTimeChart.addValue(reptime_data);
+                        }
+                        else if(i==2){
+                            user_count_data = data.results[2].series[0].values;
+                            usersChart.addValue(user_count_data);
+                        }
+                    }
+                }
+                hideChartLoading();
+            }
+        });
+    }
+</script>
+<script>
+    var dtable;
+    $(function() {
+        // $('#start_date').datetimepicker();
+        //throw the exception on browser console instead of alerting
+        $.fn.dataTable.ext.errMode = 'throw';
+        dtable = $('#data-table').DataTable({
+            ajax: {
+                url: CONSTANT.URL.SVC.GET_TEST_RECORD,
+                dataType: 'json',
+                dataSrc: 'data'
+            },
+            order: [[0, 'desc']],
+            "lengthMenu": [
+                   [25, 50, 100, -1],
+                   [25, 50, 100, "All"]
+               ],//每页显示条数设置
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "bFilter": false, //列筛序功能
+            "searching": true,//本地搜索
+            "ordering": true, //排序功能
+            "Info": true,//页脚信息
+            "autoWidth": true,//自动宽度
+            "serverSide": false,//该选项可控制分页与搜索是否请求后端服务控制，false则dt本地缓存控制
+            "pagingType": "full",
+            columns: [
+                {"data": "start_time"}, 
+                {
+                    data: null,
+                    render: function(data, type, row, meta){
+                        if (row.end_time){
+                            return row.end_time;
+                        }
+                        else {
+                            return '<span class="label label-info">运行中</span>'; 
+                        }
+                    }
+                },
+                {"data": "user_count"}, 
+                // {
+                //     data:null,
+                //     render:function(data, type, row, meta){
+                //         return "<a onclick='showStruct("+ row.data_struct +")' href='#'>查看</a>"
+                //     }
+                // },
+                {"data": "hatch_rate"},
+                {"data": "total_rps"},
+                {
+                    data: null,
+                    render: function(data, type, row, meta){
+                        var str = Number(row.fail_ratio*100).toFixed(2);
+                        str += '%';
+                        return str
+                    }
+                },
+                {
+                    data:null,
+                    render:function(data, type, row, meta){
+                        return '<a class="view-chart" onclick="showChart('+row.id+ ')" href="#">查看</a>'
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data, type, row, meta){
+                        if(row.status ===2){
+                            return '<a target="_blank" href="http://172.16.16.72:5001/report/' + row.start_time + '&' + row.end_time + '">查看</a>'
+                        }
+                        else{
+                            return '<div class="text-center"> -- </div>'
+                        }
+                    }
+                },
+                
+            ],
+            
+            "language": {
+                "search": "搜索",
+                "lengthMenu": "_MENU_ 条记录每页",
+                "zeroRecords": "没有找到记录",
+                // "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "first": "首页",
+                    "last": "末页"
+                }
+            },
+            "dom": "<'row'<'col-md-2'l><'#mytool.col-md-4'><'col-md-6'f>r>" +
+                "t" +
+                "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            initComplete: function() {
+                $("#mytool").append('<button type="button" class="btn btn-primary" id="refresh"><i class="glyphicon glyphicon-refresh"></i> 刷新</button>')
+                $("#refresh").click(reload_table);
+            }
+
+        });
+     
+    });
+
+</script>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离   注意：使用mapper代理方法开发，namespace有特殊重要的作用  -->  
+<mapper namespace="com.vdcoding.mybatis.mapper.UserMapper">
+    <!-- 根据用户名称模糊查询用户信息，可能返回多条  
+    resultType：指定就是单条记录所映射的java对象 类型  
+    ${}:表示拼接sql串，将接收到参数的内容不加任何修饰拼接在sql中。  
+    使用${}拼接sql，引起 sql注入  
+    ${value}：接收输入 参数的内容，如果传入类型是简单类型，${}中只能使用value  
+     -->  
+    <select id="findUserByName" parameterType="string" resultType="User">  
+        SELECT * FROM user 
+        <where>
+        	<if test="value != null">
+        		username LIKE CONCAT('%',#{name},'%');
+        	</if>
+        </where>
+    </select>
+    <update id="updateUser" parameterType="User">
+    	UPDATE user SET username=#{username},sex=#{sex},address=#{address} WHERE id=#{id}
+    </update>
+    <insert id="addUser" parameterType="map">
+    	INSERT INTO user (username, sex, address) VALUES(#{username},#{sex},#{address})
+    </insert>
+</mapper>  

@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package lbs;
+
+message GetAccAddrS2C
+{
+    message AccAddr
+    {
+                    uint32  ip      = 1;
+        repeated    uint32  ports   = 2;
+    }
+                uint32  rsp_code    = 1;
+    repeated    AccAddr acc_addrs   = 2;
+    repeated    AccAddr http_addrs  = 3;
+}

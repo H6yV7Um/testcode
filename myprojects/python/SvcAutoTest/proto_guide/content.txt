@@ -1,0 +1,41 @@
+这是一篇关于protobufer的纯使用指南，目的是为了快速上手使用，文中只列举出部分常用的
+内容，并添加必要的注释。如果对pb算法相关内容感兴趣请参考pb官方文档
+https://developers.google.com/protocol-buffers/
+需要翻墙才能访问，不过在我天朝程序猿面前，天空飘来五个字儿：这都不叫事儿！
+
+一、Why
+
+二、实际使用指南，本文列举了java和python版本的demo样例
+1、环境准备，下载地址：https://github.com/google/protobuf/releases/tag/v3.5.1
+下载配置编译器protoc，解压后将bin目录配置到环境变量
+下载安装protobuf依赖库
+python：pip install protobuf 或者下载源码手动安装
+java：配置maven pom依赖，或者下载jar包手动配置外部依赖
+
+2、准备proto文件
+proto支持的数据类型：
+
+样例文件如下：
+
+说明：
+2和3的区别
+1、3不支持default value
+2、对于unknown fields，在反序列化时，proto3直接丢弃；proto2会保留该字段并序列化
+默认值说明：
+string类型默认为空字符串
+bytes类型默认为空字节串
+bool类型默认为false
+数字类型默认为0
+enum类型默认为枚举类型中的第一个定义的值，而且必须为0
+repeated默认值为空数组
+字段限制：
+required和optional，标记某个字段在序列化时是否必传
+如果不定义该限制，默认都为optional可选的，例子中所有字段都为可选，也建议这样设计，伸缩性好
+
+3、编译proto文件，转换为对应语言的代码文件
+java: protoc --java_out=./ protobuf_demo.proto
+编译后会在当前目录下按照定义的package和classname生成包和类文件
+python: protoc --python_out=./ protobuf_demo.proto
+编译后在当前目录下生成protobuf_demo_pb2.py文件
+
+4、既然有对应编程语言的代码文件，那之后就可以在程序中引用并调用其提供的各种API

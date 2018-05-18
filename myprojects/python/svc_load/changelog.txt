@@ -1,0 +1,82 @@
+---------------2017-06-05-----------------
+locust修改：
+#main.py
+440行下新增
+from data_runner import data_runners
+data_runners.global_runner = data_runners.SlaveRunner()
+
+455行下新增
+import data_runner
+data_runner.events.slave_stopping.fire()
+logger.info("stop data runner!")
+
+
+-----------------2017-07-21---------------
+增加压测记录新版本：
+locust修改：
+#runner.py
+引用新增
+from runner_settings import update_record_start, update_record_stop
+
+307行下新增
+#added by yinzhixin at 2017-07-21
+last_id = update_record_start(locust_count, hatch_rate)
+
+314行下新增
+fail_ratio = round(self.stats.aggregated_stats("Total").fail_ratio, 2)
+total_rps = round(self.stats.aggregated_stats("Total").total_rps, 1)
+update_record_stop(fail_ratio, total_rps)
+
+----------------2017-07-22----------------------
+#runner.py
+310行新增：
+self.greenlet.spawn(self.save_chart_data, last_id).link_exception(callback=self.noop)
+
+311行下新增：
+    #added by yinzhixin at 2017-07-22
+    def save_chart_data(self, mysql_id):
+        '''insert data to influxdb'''
+        class InfluxError(Exception):
+            pass
+        try:
+            import requests
+            error_num = 0
+            data_tpl = 'user_count,id={id} value={user_count}\navg_response_time,id={id} value={avg_rtime}\ncurrent_rps,id={id} value={cur_rps}'
+            influxdb_write_api = 'http://192.168.1.19:8086/write?db=svcload'
+            while self.state != STATE_STOPPED:
+                data = {
+                    'id': mysql_id,
+                    'avg_rtime': round(self.stats.aggregated_stats("Total").avg_response_time, 1),
+                    'cur_rps': round(self.stats.aggregated_stats("Total").current_rps, 1),
+                    'user_count': self.user_count
+                }
+                insert_data = data_tpl.format(**data)
+                r = requests.post(influxdb_write_api, data=insert_data)
+                if int(r.status_code) != 204:
+                    error_num += 1
+                    if error_num > 5:
+                        raise InfluxError("mysql_record_id:%s, msg:%s" % (mysql_id, r.text))
+                gevent.sleep(5)
+        except Exception,e:
+            logger.error("Insert into influxdb error:%s" % e)
+
+-----------------2017-07-24---------------------------
+1、数据库配置表common_config新增id=8的influx配置
+2、loucst-runner.py-321行修改为:
+influxdb_write_api = 'http://{0[0]}:8086/write?db={0[1]}'.format(INFLUXDB_INFO())
+3、loucst-runner.py-22行修改为:
+from runner_settings import update_record_start, update_record_stop, INFLUXDB_INFO
+
+
+--------------------2017-11-02----------------------------
+#locust-runner.py
+新增引用库: import requests
+353行新增：
+stop_analysis_url = "http://172.16.16.72:5001/pause"
+self.greenlet.spawn(requests.get, stop_analysis_url).link_exception(callback=self.noop)
+
+313行新增：
+start_analysis_url = "http://172.16.16.72:5001/start"
+self.greenlet.spawn(requests.get, start_analysis_url).link_exception(callback=self.noop)
+
+以上新增代码用来启动与关闭采集locust数据的开关，最终数据用于生成测试报告

@@ -1,0 +1,16 @@
+*.doc
+*.pyc
+#settings.*
+*.log
+*.project
+*.pydevproject
+org.*
+*.class
+*.egg-info/
+build/
+target/
+dist/
+settings.json
+launch.json
+.classpath
+node_modules/

@@ -1,0 +1,51 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `Pr_musicbyweekday` $$
+Create Procedure Pr_musicbyweekday()
+     Begin         
+     -- 声明变量         
+     Declare Count int;                            -- 计数器
+	 
+	 -- --------------prenatal_admin_musicbyweek-------------
+	 Declare _song_id 			bigint;
+	 DECLARE a bigint;
+	 Declare _week_id   		int;
+	 Declare _is_recommened 	smallint;
+	 Declare _update_time		timestamp;
+	 Declare _operator			varchar(20);
+
+  declare done int;
+	 
+	 -- ---游标
+	 DECLARE cur CURSOR FOR SELECT song_id FROM prenatal_admin_music;
+	 -- 遍历数据结束标志
+	 -- DECLARE done INT DEFAULT FALSE;
+  declare CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
+
+
+	 
+	 -- 将结束标志绑定到游标
+	 -- DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+	 
+	 
+	 -- 打开游标
+	 OPEN cur;
+	 
+	  -- 开始循环
+	 read_loop: LOOP
+      -- 提取游标里的数据，这里只有一个，多个的话也一样；
+     FETCH cur INTO a;
+      -- 声明结束的时候
+     IF done=1 THEN
+      LEAVE read_loop;
+     END IF;
+     -- 这里做你想做的循环的事件
+
+   insert into prenatal_admin_musicbyweek(song_id,week_id,is_recommened,update_time)
+   values(a,round(rand()*2+1),1,DATE_ADD(NOW() ,INTERVAL  -200+ROUND(RAND()*200) day));
+
+  END LOOP;
+  -- 关闭游标
+  CLOSE cur;
+
+END

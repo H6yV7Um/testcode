@@ -1,0 +1,409 @@
+GET http://event.wanmei.com/csgo/wxplatform/index?param=1 HTTP/1.1
+Host: event.wanmei.com
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Cookie: Hm_lpvt_69fae2e80f54618b006b557e1d2b3159=1517303973; Hm_lvt_69fae2e80f54618b006b557e1d2b3159=1517041589,1517100711,1517222149,1517303973; __mtxcar=(direct):(none); __mtxsd=dacfbccf.1517303973187.0.1; __mtxud=3f930e11fba3f8ca.1509439473214.1517222149074.1517303973182.66; wx_pw=oZDRm43JsKy6pujw532iBj13g1uS*ix9QjfuOk5A8XpZ3fQjfyY7Id1w24T9Xci42yZTnjcbvhfG6ykaNmZLJCh3PC-IkQ73o-FZpnEfrQqvKb4ji0LRIz6PdMvpFnea2XfMIvAfzY70ubXz5LmiRAutbx4qafzMbIFrsWFPd-RciRO2loe4xaLxAzN*cx*Pz*anL6BQoJHsXxrl58fIESuGCS-UIEsA84sG4X850Vh8qiytL5Q-AqFEzHSfC09aP*xqUBTdUtns9bYB4Jw4aeuxCreddim*LZ4oHuyNETDIyflGTWWStMQ90Oh9FI5Q; JSESSIONID=78E042ABDCEB02EA0B7D1201E2953183; __mtxsr=csr:(direct)|cdt:(direct)|advt:(none)|camp:(none)
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C202 MicroMessenger/6.5.20 NetType/WIFI Language/zh_CN
+Accept-Language: zh-cn
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Tue, 30 Jan 2018 14:25:55 GMT
+Content-Type: text/html;charset=UTF-8
+Connection: keep-alive
+Set-Cookie: JSESSIONID=B9DEEBC0BA445BCE8ECABA72E242884B; Path=/; HttpOnly
+Content-Language: zh-CN
+Vary: Accept-Encoding
+Content-Length: 14476
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"> -->
+  <meta name="viewport" content="width=640,user-scalable=no" />
+<meta name="description" content="由Valve开发，完美世界代理的第一人称射击团队竞技游戏CS:GO（中文名《反恐精英：全球攻势》），即将开放国服，正统续作，席卷全球！"/>
+<meta name="keywords" content="CS,FPS,V社,射击,CSGO,CS:GO,valve,Valve,VALVE,FPS游戏,全球攻势,反恐精英,完美世界,CSGO官网,CSGO国服,CSGO预约,CS:GO预约,CS:GO官网,FPS网络游戏,第一人称射击,CSGO国服下载,CSGO国服预约,CS:GO国服预约,CS:GO国服下载,反恐精英全球攻势,反攻精英：全球攻势,反恐精英全球攻势官网,反攻精英：全球攻势官网"/>
+
+  <title>签到 - 《CSGO》 官方网站</title>
+  <link rel="stylesheet" type="text/css" href="http://www.csgo.com.cn/hd/1612/w1/style/master.css" />
+  <style type="text/css">
+    html,body{ height: 100%;}
+  </style>
+</head>
+<body>
+<div class="wrap wrap_bg">
+  <div class="header">
+    <a href="javascript:void(0);" target="_blank" class="auto logo"><img src="http://www.csgo.com.cn/hd/1612/w1/images/logo.png" /></a>
+    <div class="head">
+      <img id="headimg" src="http://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoibgR5AdNAmkcZKibncbr4znObIELuVRofmB91t5kTUWpbXiafP2cXa9Ed4bhdmA7mhvlZNKFHbToPg/132" />
+      <p id="nickname">影之心</p>
+      <p>您的积分：<span id="leftscore">550</span></p>
+    </div>
+    <div class="btn">
+      <p class="sign_btn"><a href="javascript:void(0)"></a></p>
+      <p class="score_btn"><a href="javascript:void(0);" target="_blank" id="rank_btn">积分榜</a><a href="javascript:void(0);" target="_blank" id="score_btn">积分记录</a></p>
+    </div>
+  </div>
+  <dl class="info">
+    <dt><strong>积分须知</strong>：</dt>
+    <dd>1、新用户首次签到奖励 20积分；</dd>
+<dd>2、以后每日签到获得 10积分；</dd>
+<dd>3、积分也可以通过官方微信公众号内其他途径获取；</dd>
+<dd>4、积分可用于抽奖，更有积分兑换等超值活动即将上线；</dd>
+<dd>5、积分仅限于“CSGO国服”官方微信公众号内流通。</dd>
+  </dl>
+
+  <div class="record charts" id="rank_record" style="display: none;">
+    <p class="title">
+      <a href="javascript:void(0);" goback>返回</a>
+      积分排行
+    </p>
+    <table cellspacing="0" cellpadding="0">
+      <thead>
+      <tr>
+        <td>名次</td>
+        <td>头像</td>
+        <td>昵称</td>
+        <td>积分</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <table cellspacing="0" cellpadding="0">
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="record" id="score_record" style="display: none">
+    <p class="title">
+      <a href="javascript:void(0);" goback>返回</a>
+      积分记录
+    </p>
+    <table cellspacing="0" cellpadding="0">
+      <thead>
+      <tr>
+        <td>来源</td>
+        <td>时间</td>
+        <td>积分</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <a href="javascript:void(0)" class="record_more"><span class="auto"></span>查看更多</a>
+    <a href="javascript:void(0)" class="record_help">积分获取及使用帮助</a>
+  </div>
+
+  <div class="explain" id="score_describ" style="display: none;">
+    <a href="javascript:void(0)" class="go_back" goback>返回</a>
+    <h1>积分获取及使用帮助</h1>
+    <dl>
+      <dt>微信公众号积分可以通过以下几种方式获得：</dt>
+      <dd>1.每日签到</dd>
+<dd>2.今日任务</dd>
+<dd>3.每月GO粮获得积分奖励</dd>
+<dd>4.特色活动奖励</dd>
+<dd>所以不要忘了每天签到，更别错过每天的小任务，积分积少成多，按月拿GO粮，上哪找这么好的事儿？</dd>
+    </dl>
+    <dl>
+      <dt>关于每月GO粮，GO哥还要补充几点：</dt>
+      <dd>1．每月GO粮中，需使用积分兑换钥匙参与每月GO粮</dd>
+<dd>2．特色活动中也可使用积分参与活动</dd>
+<dd>所以不要错过任何能拿到的积分，因为积分就是胶囊、二西莫夫、鼠标甚至是你意想不到的惊喜！</dd>
+    </dl>
+  </div>
+
+
+<footer>
+    <img src="http://www.csgo.com.cn/hd/1612/w1/images/foot_logo.jpg" />
+    <p>完美世界（北京）软件科技发展有限公司 版权所有</p>
+    <p>© Valve Corporation, all rights reserved. Licensed to Perfect World Co., Ltd. in China. Valve, the Valve logo, Counter-Strike, and the Counter-Strike logo are trademarks and/or registered trademarks of Valve Corporation.</p>
+  </footer>
+</div>
+
+<!-- 提示输入手机号码弹框 -->
+<div class="prompt_box prompt_tel addtxt">
+  <a href="javascript:void(0)" class="close"></a>
+  <h1>请输入您的手机号码</h1>
+  <input type="tel" maxlength="11" id="phone"/>
+  <button id="cmt_btn" onclick="savePhone()">提 交</button>
+  <p style="font-weight:bold;color:#fff; text-align:center;">手机号一经提交将无法自行修改，请您确认后填写。</p>
+</div>
+
+<script type="text/javascript" src="http://www.wanmei.com/public/js/jq_183.js"></script>
+<script type="text/javascript" src="http://www.wanmei.com/public/js/wm.js" top="0" bottom="0"></script>
+<script type="text/javascript" src="http://www.wanmei.com/public/js/weixin.js"></script>
+<script type="text/javascript">
+  //弹出框
+  function prompt_show(ele){
+    $('<div class="prompt_bg"></div>').appendTo($("body"));
+    $(ele).fadeIn();
+  }
+  //关闭弹出框
+  function prompt_hide(ele){
+    $('.prompt_bg').remove();
+    $(ele).fadeOut();
+  }
+
+  //初始化输入手机号码弹框
+  //prompt_show('.prompt_tel');
+
+  //关闭输入手机号弹出框
+  $('.prompt_bg, .prompt_tel .close').on('click',function(){
+    prompt_hide('.prompt_tel');
+  });
+
+
+
+  wx.ready(function(){
+    // wx.onMenuShareAppMessage({
+    //   title: '每日签到',
+    //   desc: '签到有大礼,在这儿等着你！',
+    //   link: 'http://weixin.cs.wanmei.com/wxoauthhandle/wxshare.html?i=849044686114&event=1',
+    //   trigger: function (res) {
+    //     // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+    //     //alert('用户点击发送给朋友');
+    //   },
+    //   success: function (res) {
+    //     //window.location.href = "http://t.cn/RZmX3L7" ;
+    //   },
+    //   cancel: function (res) {
+    //     //alert('已取消');
+    //   },
+    //   fail: function (res) {
+    //     //alert(JSON.stringify(res));
+    //   }
+    // });
+
+    // wx.onMenuShareTimeline({
+    //   title: '每日签到',
+    //   desc: '签到有大礼,在这儿等着你！',
+    //   link: 'http://weixin.cs.wanmei.com/wxoauthhandle/wxshare.html?i=849044686114&event=1',
+    //   trigger: function (res) {
+    //     // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+    //     //alert('用户点击分享到朋友圈');
+    //   },
+    //   success: function (res) {
+    //     //window.location.href = "http://t.cn/RZmX3L7" ;
+    //   },
+    //   cancel: function (res) {
+    //     //alert('已取消');
+    //   },
+    //   fail: function (res) {
+    //     //alert(JSON.stringify(res));
+    //   }
+    // });
+
+    wx.hideMenuItems({
+      menuList: ["menuItem:copyUrl","menuItem:openWithQQBrowser",
+        "menuItem:openWithSafari","menuItem:share:email","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:originPage"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+    });
+    wx.onMenuShareAppMessage({
+      title: '我刚参加了CSGO国服积分夺宝活动！可以用积分赢鼠标哦~',
+      desc: '关注“CSGO国服”官方微信，更多资讯抢先知！',
+      link: 'http://weixin.cs.wanmei.com/wx/oauth2/authorize.html?i=1312443075184&target=CSGO1612161730374568584&param=1',
+      imgUrl: 'http://www.csgo.com.cn/hd/1612/w2/images/share.jpg',
+      trigger: function (res) {
+        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+        //alert('用户点击发送给朋友');
+      },
+      success: function (res) {
+        //window.location.href = "http://t.cn/RZmX3L7" ;
+      },
+      cancel: function (res) {
+        //alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: '我刚参加了CSGO国服积分夺宝活动！可以用积分赢鼠标哦~',
+      link: 'http://weixin.cs.wanmei.com/wx/oauth2/authorize.html?i=1312443075184&target=CSGO1612161730374568584&param=1',
+      imgUrl: 'http://www.csgo.com.cn/hd/1612/w2/images/share.jpg',
+      trigger: function (res) {
+        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+        //alert('用户点击分享到朋友圈');
+      },
+      success: function (res) {
+        //window.location.href = "http://t.cn/RZmX3L7" ;
+      },
+
+      cancel: function (res) {
+        //alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+  });
+  function changeScore(score){
+    var totalScore=$('#leftscore').html();
+    $('#leftscore').html(parseInt(totalScore)+score);
+  }
+
+  function appendHtml(e,cls){
+    return '<tr'+(cls>0?' class="me"':'""')+'>'+
+            '<td>'+ e.rank+'</td>'+
+            '<td><img src="'+ e.headimg +'" alt=""></td>'+
+            '<td>'+ e.nickname+'</td>'+
+            '<td>'+ e.score+'</td>'+
+            '</tr>';
+  }
+
+  function getScorelog(){
+    if(flag)return false;
+    flag=true;
+    $.getJSON('/csgo/wxplatform/getScorelog',{r:Math.random(),maxid:maxid},function(json){
+      if(json.success){
+        if(json.scorelog){
+          var data=eval('('+json.scorelog+')');
+          $(data).each(function(i,e){
+            maxid=e.id;
+            $('tbody:eq(2)').append(
+                    '<tr>'+
+                    '<td>'+ e.type+'</td>'+
+                    '<td>'+ e.createtime.substr(0,10)+'</td>'+
+                    '<td>'+ (e.score>0?('+'+ e.score): e.score)+'</td>'+
+                    '</tr>'
+            )
+          });
+        }
+      }
+      if(!json.hasmore){
+        $('.record_more').unbind().html('已无更多记录');
+      }
+      flag=false;
+    }).error(errorHandler=function(jqXHR, textStatus, errorThrown){
+      flag=false;
+      //alert('加载失败，请重试！');
+    });
+  }
+
+  function isMobile(phone) {
+    return /^(\d{2,5}-\d{7,8}(-\d{1,})?)|(13\d{9})|(15\d{9})|(18\d{9})|(14\d{9})|(17\d{9})$/.test(phone);
+  }
+
+  function savePhone(){
+    var phone=$('#phone').val();
+    if($.trim(phone)==''||!isMobile(phone)){
+      alert('请输入正确的手机号码！');
+      return;
+    }
+    if(flag)return;
+    flag=true;
+    $.getJSON('/csgo/wxplatform/savePhone',{r:Math.random(),phone:phone},function(json){
+      if(json.success){
+        prompt_hide('.prompt_tel');
+      }else{
+        //window.location.href="error";
+      }
+      alert(json.message);
+      flag=false;
+    }).error(errorHandler=function(jqXHR, textStatus, errorThrown){
+      flag=false;
+      //alert('加载失败，请重试！');
+    });
+  }
+
+  function getTopUser(){
+    $.getJSON('/csgo/wxplatform/getTopUser',{r:Math.random()},function(json){
+      if(json.success){
+        if(json.topuser){
+          topUser=json.topuser;
+          var top_data=eval('('+json.topuser+')');
+          $(top_data).each(function(i,e){
+            $('tbody:eq(0)').append(appendHtml(e,0));
+          })
+        }
+        if(json.mine){
+          var my_data=eval('('+json.mine+')');
+          //changeScore(my_data.score);
+          //$('.head p:eq(0)').html(my_data.nickname);
+          //$('.head img').attr('src',my_data.headimg);
+          $('tbody:eq(1)').append(appendHtml(my_data,1))
+        }
+      }else{
+        //window.location.href="error";
+      }
+    }).error(errorHandler=function(jqXHR, textStatus, errorThrown){
+      //flag=false;
+      //alert('加载失败，请重试！');
+    });
+  }
+
+  var flag=false;
+  var maxid=0;
+  var topUser="";
+  $(function(){
+    //签到按钮
+    $('.sign_btn').on('touchend',function(){
+      if(flag)return;
+      flag=true;
+      $.getJSON('/csgo/wxplatform/sign',{r:Math.random()},function(json){
+        if(json.success){
+          /*$('.sign .tip_tit').html('签到成功！');
+          $('.sign .red').html('+'+json.score+'积分')*/
+          alert('签到成功！');
+          changeScore(json.score);
+        }else if(json.message.indexOf('手机')>-1) {
+          prompt_show('.prompt_tel');
+        }else{
+          alert(json.message);
+        }
+        flag=false;
+      }).error(errorHandler=function(jqXHR, textStatus, errorThrown){
+        flag=false;
+        alert('签到失败，请重试！');
+      });
+    });
+
+
+    //积分榜
+    $('#rank_btn').on('click',function(){
+      if(topUser==""){
+        getTopUser();
+      }
+      $('#rank_record').show();
+      $('#score_record,.header,dl:eq(0),#score_describ').hide();
+    });
+    $('#score_btn').on('click',function(e){
+      getScorelog();
+      $('#rank_record,.header,dl:eq(0),#score_describ').hide();
+      $('#score_record').show();
+    })
+
+    $('.record_help').on('click',function(e){
+      getScorelog();
+      $('#rank_record,.header,dl:eq(0),#score_record').hide();
+      $('#score_describ').show();
+    })
+
+    $('[goback]').click(function () {
+      $('.header,dl:eq(0)').show();
+      $('#score_record,#rank_record,#score_describ').hide();
+    })
+
+    $('.record_more').click(function(){
+      getScorelog();
+    });
+  })
+</script>
+</body>
+</html>

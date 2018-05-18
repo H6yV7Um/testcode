@@ -1,0 +1,53 @@
+//声明proto语法
+syntax = "proto3";
+/*
+声明编译后的代码的包名称，用于防止命名空间冲突
+python是依赖本地系统目录层级，用不到该选项，但最好声明
+*/
+package com.vdcoding;
+
+/*
+声明在java中引用的包名称，如果不声明则使用文件开头定义package的名称
+如果proto文件被编译为非java代码，则该选项不会有任何影响
+*/
+option java_package = "com.vdcoding";
+
+/*声明在java中引用的类名称，如果不声明则使用文件名称经过驼峰式命名后作为类名称
+编译后会根据声明的包和类名称生成完整层级的包目录
+*/
+option java_outer_classname = "ProtoDemo";
+
+/*
+选择编译模式，只对C++和java有效果，有三个可选值：
+1、SPEED: 默认值，编译出的代码高度优化过，包括全部可用接口，而且运行速度嘎嘎的
+编译后的代码行数2200+
+2、CODE_SIZE: 编译出的代码相较SPEED体积略小，也就是没有经过特殊优化，所以速度略慢，
+但是包括全部可用接口，如果proto文件内容巨大，而且对速度没有严苛的要求，可以选择该值
+编译后的代码行数：1700+
+3、LITE_RUNTIME: 编译器会依赖一个瘦身版的库libprotobuf-lite，所以编译出的代码
+很轻量，并且只提供部分主要接口，但是速度和SPEED一样。适合运行于手机平台上。
+编译后的代码行数：1600+
+*/
+option optimize_for = SPEED;
+
+
+message OnlineUser{
+    enum PhoneType {
+        MOBILE = 0;
+        HOME = 1;
+        WORK = 2;
+      }
+    message UserInfo{
+        uint64 uid = 1;
+        string usre_name = 2;
+        PhoneType type = 3;
+        uint32 phone_num = 4;
+        uint32 cli_type = 5;
+    }
+    uint32 rsp_code = 1;
+    string product = 2;
+    uint64 query_time = 3;
+    //repeated相当于java中的ArrayList，python中的list
+    repeated uint32 random = 4;
+    repeated UserInfo user_list = 5;
+}

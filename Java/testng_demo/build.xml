@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="testoutput" name="TestNG Demo"> 
+	<!--项目根目录-->
+    <property name="base_dir" value="."/>
+	<!-- 项目源码目录-->
+	<property name="source_dir" value="${base_dir}/src"/>
+	<property name="test_suite_dir" value="${base_dir}/test_suites"/>
+	<!--美化后的测试报告输出地址-->
+	<property name="beautify_result_dir" value="D:/mycode/Java/testng_demo/beautify_report"/>
+	<!--依赖jar包目录-->
+	<property name="lib_dir" value="${base_dir}/lib"/>
+	<!-- 编译后的class文件路径-->
+	<property name="class_dir" location="${base_dir}/build/classes" />
+	<!-- 打包路径-->
+	<property name="jar_dir" location="${base_dir}/build/jar"/>
+	<property name="jar_name" value="test.jar"/>
+	<!--导入testng的jar包-->
+	<taskdef resource="testngtasks" classpath="${lib_dir}/testng-6.13.1.jar"/>
+	
+	<!--设置jar包相关：包括程序运行时的依赖包和程序包-->
+	<path id="dependent_jar"> 
+		<fileset dir="${lib_dir}" includes="**/*.jar"/>
+	</path>
+	<path id="test_jar">
+		<pathelement location="${jar_dir}/${jar_name}"/>
+	</path>
+	
+	<!-- 清理上次构建的文件 -->
+	<target name="clean"> 
+		<delete dir="${class_dir}"/>
+		<delete dir="${jar_dir}"/>
+	</target>
+	
+	<!-- 编译 -->
+	<target name="compile" depends="clean">
+		<mkdir dir="${class_dir}"/>
+		<javac srcdir="${source_dir}" encoding="UTF-8" destdir="${class_dir}" classpathref="dependent_jar"
+			includeantruntime="off" debug="on" debuglevel="lines,vars,source"/> 
+	</target>
+	
+	<!-- 打包 -->
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar_dir}"/>
+		<jar destfile="${jar_dir}/${jar_name}" basedir="${class_dir}"></jar>
+	</target>
+	
+	<!-- 执行testng测试 -->
+	<target name="runtest" depends="jar">
+		<!-- 设置测试结果输出路径,如果不设置默认就是test-output；引用相关jar包-->
+		<testng outputdir="${base_dir}/test-output">
+			<classpath>
+				<path refid="dependent_jar"/>
+				<path refid="test_jar"/>
+			</classpath>
+			<!--批量指定testng.xml文件--> 
+			<xmlfileset dir="${test_suite_dir}" includes="testng*.xml"/> 
+		</testng> 
+	</target>
+	
+    <tstamp>   
+        <format property="CURTIME" pattern="yyyyMMdd_HHmmss" locale="cn"/>
+    </tstamp>   
+
+	<!-- 借助xslt样式表生成更加方便阅读的html报告-->
+	<!-- testng-xslt下载地址：https://github.com/prashanth-sams/testng-xslt-1.1.2 -->
+	<target name="testoutput" depends="runtest" >
+		<xslt in="${base_dir}/test-output/testng-results.xml" style="${base_dir}/testng-results.xsl"
+		out="${beautify_result_dir}/${CURTIME}/index.html " >
+			<!-- 指定testNgXslt.outputDir时，路径一定要使用绝对路径,因为expression默认会被当作字符串处理，否则会报IO Error无法找到指定路径,-->
+			<param name= "testNgXslt.outputDir" expression="${beautify_result_dir}/${CURTIME}"/>
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+			<param name="testNgXslt.sortTestCaseLinks" expression="true" />
+			<param name="testNgXslt.testDetailsFilter" expression="FAIL,SKIP,PASS,CONF,BY_CLASS" />
+			<classpath refid= "dependent_jar" />
+		</xslt>
+	</target>
+</project>

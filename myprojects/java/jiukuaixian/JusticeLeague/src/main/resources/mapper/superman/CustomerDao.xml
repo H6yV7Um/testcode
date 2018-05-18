@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vdcoding.modules.superman.dao.CustomerDao">
+
+	<select id="getCustomerById" resultType="Customer">
+		SELECT * FROM app_customer WHERE id = #{value}
+	</select>
+	
+	<select id="getCustomerByOpenId" resultType="Customer">
+		SELECT * FROM app_customer WHERE open_id = #{value}
+	</select>
+
+	<insert id="save" parameterType="Customer">
+		INSERT INTO app_customer
+		(
+			`open_id`, 
+			`nick_name`, 
+			`avatar_url`
+		)
+		VALUES
+		(
+			#{openId}, 
+			#{nickName}, 
+			#{avatarUrl}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="Customer">
+		UPDATE app_customer
+		<set>
+			<if test="nickName != null">`nick_name` = #{nickName}, </if>
+			<if test="avatarUrl != null">`avatar_url` = #{avatarUrl}, </if>
+			<if test="gender != null">`gender` = #{gender}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="language != null">`language` = #{language}, </if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+</mapper>

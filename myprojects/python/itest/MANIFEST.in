@@ -1,0 +1,2 @@
+recursive-include itest/static *
+recursive-include itest/template *

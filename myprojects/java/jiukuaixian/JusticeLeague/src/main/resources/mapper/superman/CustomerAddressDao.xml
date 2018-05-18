@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.vdcoding.modules.superman.dao.CustomerAddressDao">
+	<select id="getAvailableAddress" resultType="CustomerAddress">
+		SELECT 
+		`id`,
+		`customer_id`,
+		`name`,
+		`sex`,
+		`phone`,
+		`is_default`,
+		`detail`,
+		`full_address`,
+		`province`,
+		`city`,
+		`country` 
+		`town`,
+		`latitude`,
+		`longitude`
+		FROM app_customer_address 
+		WHERE customer_id=#{value}
+	</select>
+	
+	<select id="getDefaultAddress" resultType="CustomerAddress">
+		SELECT * FROM app_customer_address WHERE is_default=1 limit 1;
+	</select>
+	
+	<select id="getAddress" resultType="CustomerAddress">
+		SELECT * FROM app_customer_address WHERE id=#{value}
+	</select>
+	
+	<update id="update" parameterType="CustomerAddress">
+		UPDATE app_customer_address
+		<set> 
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="isDefault != null">`is_default` = #{isDefault}, </if>
+			<if test="fullAddress != null">`full_address` = #{fullAddress}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="town != null">`town` = #{town}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="save" parameterType="CustomerAddress">
+		INSERT INTO app_customer_address
+		(
+			`customer_id`,
+			`name`,
+			`sex`,
+			`phone`,
+			`is_default`,
+			`detail`,
+			`full_address`,
+			`province`,
+			`city`,
+			`country`, 
+			`town`,
+			`latitude`,
+			`longitude`
+		)
+		VALUES
+		(
+			#{customerId},
+			#{name},
+			#{sex},
+			#{phone},
+			#{isDefault},
+			#{detail},
+			#{fullAddress},
+			#{province},
+			#{city},
+			#{country},
+			#{town},
+			#{latitude},
+			#{longitude}
+		)
+	</insert>
+	
+	<delete id="delete">
+		DELETE FROM app_customer_address WHERE id=#{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		DELETE FROM app_customer_address WHERE id IN 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+</mapper>  

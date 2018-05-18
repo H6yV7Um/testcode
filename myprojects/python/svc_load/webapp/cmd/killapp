@@ -1,0 +1,1 @@
+ps -ef|grep rungevent|grep -v grep|awk {'print $2'}|xargs kill

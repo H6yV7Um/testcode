@@ -1,0 +1,15 @@
+1、tasmanager是负责为分布式服务器分配任务的控制器
+2、taskworker是负责执行任务的
+
+3、将两个脚本上传到不同的服务器下，最好是linux sever，window支持不是太好，即使按照官方文档介绍的加上一些windows必须的，例如if __name__ =="__main__"、freeze_support()也还是会报各种奇怪的错误，网上查说是pyton2.7的bug，所以不去理它，我们直接部署到linuxsever上，反正搞互联网的生产环境都是linux，windows很少
+
+4、修改程序中对应的IP地址，worker连接manager的IP，多个worker对应一个manager，很清晰的分布式应用架构
+
+5、运行manager，然后再运行worker
+
+
+该demo是copy廖雪峰老师官网的上的一个例子，后来查阅multiprocessing的文档发现，廖老师原来也参考了官方文档^-^
+domo很简单，但是很清晰的展示分布式应用的例子，可以以此作为基础，根据实际需求不断深化
+
+有时间我会再搞个实际应用的demo
+

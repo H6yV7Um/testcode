@@ -1,0 +1,196 @@
+<div class="status" id="status">
+    <nav class="menu">
+        <ul class="tabs container">
+            <li><a href="#">Statistics</a></li>
+            <li><a href="#" class="chart-tab-link">Charts</a></li>
+            <li><a href="#">Failures</a></li>
+            <li><a href="#" class="exceptions-tab-link">Exceptions</a></li>
+        </ul>
+    </nav>
+    <div class="panes container">
+        <div style="display:none;">
+            <table id="stats" class="stats">
+                <thead>
+                    <tr>
+                        <th class="stats_label" href="#" data-sortkey="method">Type</th>
+                        <th class="stats_label" href="#" data-sortkey="name">Name</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="num_requests" title="Number of successful requests">requests</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="num_failures" title="Number of failures">fails</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="median_response_time" title="Median response time">Median (ms)</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="avg_response_time" title="Average response time">Average (ms)</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="min_response_time" title="Min response time">Min (ms)</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="max_response_time" title="Max response time">Max (ms)</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="avg_content_length" title="Average response size">Content Size</th>
+                        <th class="stats_label numeric" href="#" data-sortkey="current_rps" title="Current number of requests per second">reqs/sec</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="charts" style="display:none;">
+            <div class="charts-container"></div>
+        </div>
+        <div style="display:none;">
+            <table id="errors" class="stats">
+                <thead>
+                    <th class="error_count stats_label" data-sortkey="1">fails</th>
+                    <th class="stats_label" href="#" data-sortkey="method">Method</th>
+                    <th class="stats_label" href="#" data-sortkey="name">Name</th>
+                    <th class="error_type stats_label" data-sortkey="0">Type</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div style="display:none;">
+            <table id="exceptions" class="stats">
+                <thead>
+                    <th class="exception_occurences stats_label" data-sortkey="1">occurences</th>
+                    <th class="exception_traceback stats_label" data-sortkey="0">Traceback</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-jqote-template" id="stats-template">
+    <![CDATA[
+    <tr class="<%=(alternate ? "dark" : "")%> <%=(this.name == "Total" ? "total" : "")%>">
+        <td><%= (this.method ? this.method : "") %></td>
+        <td class="name" title="<%= this.name %>"><%= this.name %></td>
+        <td class="numeric"><%= this.num_requests %></td>
+        <td class="numeric"><%= this.num_failures %></td>
+        <td class="numeric"><%= Math.round(this.median_response_time) %></td>
+        <td class="numeric"><%= Math.round(this.avg_response_time) %></td>
+        <td class="numeric"><%= this.min_response_time %></td>
+        <td class="numeric"><%= this.max_response_time %></td>
+        <td class="numeric"><%= Math.round(this.avg_content_length) %></td>
+        <td class="numeric"><%= Math.round(this.current_rps*100)/100 %></td>
+    </tr>
+    <% alternate = !alternate; %>
+    ]]>
+</script>
+<script type="text/x-jqote-template" id="errors-template">
+    <![CDATA[
+    <tr class="<%=(alternate ? "dark" : "")%>">
+        <td><%= this.occurences %></td>
+        <td><%= this.method %></td>
+        <td><%= this.name %></td>
+        <td><%= function(e) { return e.replace("<", "&lt;"); }(this.error) %></td>
+    </tr>
+    <% alternate = !alternate; %>
+    ]]>
+</script>
+<script type="text/x-jqote-template" id="exceptions-template">
+    <![CDATA[
+    <tr class="<%=(alternate ? "dark" : "")%>">
+        <td class="occurences"><%= this.count %></td>
+        <td class="traceback" title="Occured on: <%= this.nodes %>"><%= function(e) { return e.replace("<", "&lt;"); }(this.traceback) %>
+<%= function(e) { return e.replace("<", "&lt;"); }(this.msg) %></td>
+    </tr>
+    <% alternate = !alternate; %>
+    ]]>
+</script>
+
+<script>
+    var alternate = false;
+
+    $("ul.tabs").tabs("div.panes > div").on("onClick", function(event) {
+        if (event.target == $(".chart-tab-link")[0]) {
+            // trigger resizing of charts
+            rpsChart.resize();
+            responseTimeChart.resize();
+            usersChart.resize();
+        }
+        if(event.target == $(".exceptions-tab-link")[0]){
+            updateExceptions();
+        }
+    });
+
+    var stats_tpl = $('#stats-template');
+    var errors_tpl = $('#errors-template');
+    var exceptions_tpl = $('#exceptions-template');
+
+    var sortBy = function(field, reverse, primer){
+        reverse = (reverse) ? -1 : 1;
+        return function(a,b){
+            a = a[field];
+            b = b[field];
+        if (typeof(primer) != 'undefined'){
+            a = primer(a);
+            b = primer(b);
+        }
+        if (a<b) return reverse * -1;
+        if (a>b) return reverse * 1;
+        return 0;
+        }
+    }
+
+    // Sorting by column
+    var sortAttribute = "name";
+    var desc = false;
+    var report;
+    $(".stats_label").click(function(event) {
+        event.preventDefault();
+        sortAttribute = $(this).attr("data-sortkey");
+        desc = !desc;
+
+        $('#stats tbody').empty();
+        $('#errors tbody').empty();
+        alternate = false;
+        totalRow = report.stats.pop()
+        sortedStats = (report.stats).sort(sortBy(sortAttribute, desc))
+        sortedStats.push(totalRow)
+        $('#stats tbody').jqoteapp(stats_tpl, sortedStats);
+        alternate = false;
+        $('#errors tbody').jqoteapp(errors_tpl, (report.errors).sort(sortBy(sortAttribute, desc)));
+    });
+
+    function updateStats() {
+        $.get({
+            url: 'svc/loadtest/stats', 
+            data: {"record_id": $("#locust_record").data("record_id")},
+            dataType: 'json',
+            success: function (data) {
+                report = JSON.parse(data.msg);
+                // report = (temp!=null)?temp:[];
+                // $('#stats tbody').empty();
+                // $('#errors tbody').empty();
+                alternate = false;
+                if(report != null){
+                    totalRow = report.stats.pop()
+                    sortedStats = (report.stats).sort(sortBy(sortAttribute, desc))
+                    sortedStats.push(totalRow)
+                    $('#stats tbody').jqoteapp(stats_tpl, sortedStats);
+                    alternate = false;
+                    $('#errors tbody').jqoteapp(errors_tpl, (report.errors).sort(sortBy(sortAttribute, desc)));
+
+                    if (report.state !== "stopped"){
+                        // get total stats row
+                        var total = report.stats[report.stats.length-1];
+                    }
+                }
+            }
+    });
+    }
+    updateStats();
+
+    function updateExceptions() {
+        $.get({
+            url: 'svc/loadtest/exceptions', 
+            data: {"record_id": $("#locust_record").data("record_id")},
+            dataType: "json",
+            success: function (data) {
+                data = JSON.parse(data.msg);
+                if(data != null){
+                    $('#exceptions tbody').empty();
+                    $('#exceptions tbody').jqoteapp(exceptions_tpl, data.exceptions);
+                }
+                
+            }
+        });
+    }
+</script>

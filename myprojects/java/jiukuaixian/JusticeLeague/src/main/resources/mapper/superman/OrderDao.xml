@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离   注意：使用mapper代理方法开发，namespace有特殊重要的作用  -->  
+<mapper namespace="com.vdcoding.modules.superman.dao.OrderDao">
+	<resultMap id="orderResult" type="Order">
+		<id property="id" column="id"></id>
+		<collection property="images" column="id" ofType="GoodsImage" select="selectGoodsImages">
+			<id property="id" column="id"></id>
+		</collection>
+	</resultMap>
+	<select id="selectGoodsImages" resultType="Goods">
+		SELECT * FROM app_goods_image
+		<where>
+			<if test="value != null">
+				goodsId=#{goodsId}
+			</if>
+		</where>
+	</select>
+	<select id="getOrderById" resultMap="orderResult">
+		SELECT * FROM app_order WHERE id=#{orderId}
+	</select>
+    <select id="getOrders" resultMap="orderResult">  
+        SELECT * 
+        FROM app_order
+        WHERE status=#{status}
+        ORDER BY orderTime DESC
+        LIMIT #{from},#{limit}
+    </select>
+    <!-- <update id="updateUser" parameterType="User">
+    	UPDATE user SET username=#{username},sex=#{sex},address=#{address} WHERE id=#{id}
+    </update>
+    <insert id="addUser" parameterType="map">
+    	INSERT INTO user (username, sex, address) VALUES(#{username},#{sex},#{address})
+    </insert> -->
+</mapper>  

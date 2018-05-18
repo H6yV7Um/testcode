@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SVCLoad</title>
+    <link rel="icon" type="image/x-icon" href="img/logo.png">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="css/formValidation.min.css"/>
+    <link rel="stylesheet" href="css/iosOverlay.css">
+    <link rel="stylesheet" href="css/iziModal.min.css">
+    <link rel="stylesheet" href="css/prettify.css">
+    <link rel="stylesheet" href="css/tips.css">
+    <!-- custom css -->
+    <link rel="stylesheet" href="css/custom.min.css">
+
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <link rel="stylesheet" href="css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css  " />
+    <link rel="stylesheet" href="plugins/iCheck/square/green.css">
+    <link rel="stylesheet" href="plugins/bootstrap-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css">
+    <style>
+        label.col-lg-1.control-label {
+            padding-right: 0px;
+        }
+    </style> 
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+        <header class="main-header">
+            <a href="#" class="logo">
+                <span class="logo-mini"><b>S</b>VC</span>
+                <span class="logo-lg"><b>SVC</b>Load</span>
+            </a>
+
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <!--<img src="img/logo.png" class="user-image" alt="User Image">-->
+                                <i class="fa fa-user-circle-o"></i>
+                                <span id="user_name" class="hidden-xs">loading...</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" style="width:20px;left:0">
+                                <li id="change_password" role="presentation" data-toggle="modal" data-target="#pwdModal">
+                                    <a role="menuitem" href="#">
+                                        <i class="fa fa-save"></i>
+                                        修改密码
+                                    </a> 
+                                </li>
+                                <!--<li role="presentation" class="divider"></li>-->
+                                <li id="logout" role="presentation">
+                                    <a role="menuitem" href="#">
+                                        <i class="fa fa-sign-out"></i>
+                                        注销
+                                    </a> 
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-question-circle"></i>帮助</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </header>
+
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="img/logo.png" class="img-circle" alt="Logo Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>飞起吧 SVC</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Flying</a>
+                    </div>
+                </div>
+
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+
+                <ul id="left-nav" class="sidebar-menu" style="display:none;">
+                    <ul id="svc" class="sidebar-menu">
+                        <li class="header">SVC</li>
+                        <li id="operation"data-url="data_monitor.html">
+                            <a href="#">
+                                <i class="fa fa-compass"></i> 
+                                <span>驾驶舱</span>
+                            </a>
+                        </li>
+                        <li class="active" data-url="client.html">
+                            <a href="#">
+                                <i class="fa fa-space-shuttle"></i> 
+                                <span>停机坪</span>
+                            </a>
+                        </li>
+                        <li id="locust" data-url="locust">
+                            <a href="#">
+                                <i class="fa fa-rocket"></i> 
+                                <span>Locust</span>
+                            </a>
+                        </li>
+                        <li data-url="test_record.html">
+                            <a href="#">
+                                <i class="fa fa-table"></i> 
+                                <span>压测记录</span>
+                            </a>
+                        </li>
+                        <li data-url="func_test_record.html">
+                            <a href="#">
+                                <i class="fa fa-send"></i> 
+                                <span>CI自动化</span>
+                            </a>
+                        </li>
+                        <li data-url="service_mgr">
+                            <a href="#">
+                                <i class="fa fa-gears"></i>
+                                <span>服务端管理</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-dashboard"></i> <span>服务端监控</span>
+                                <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="http://172.16.0.250/zabbix/screenconf.php" target="_blank">
+                                        <i class="fa fa-circle-o"></i>
+                                        Zabbix
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://172.16.16.44:9090/#codis-demo" target="_blank">
+                                        <i class="fa fa-circle-o"></i>
+                                        Codis
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="svc_admin">
+                            <a href="/admin" target="_blank">
+                                <i class="fa fa-user"></i> 
+                                <span>SVCadmin</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul id="test_group" class="sidebar-menu">
+                        <li class="header">测试组</li>
+                        <li data-url="group_servers.html">
+                            <a href="#">
+                                <i class="fa fa-link"></i> 
+                                <span>测试服务器管理</span>
+                            </a>
+                        </li>
+                    </ul>
+                </ul>
+            </section>
+        </aside>
+
+        <div class="content-wrapper">
+            <div id="sub-page" class="content"></div>
+        </div>
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                Stay Hungry Stay Foolish.
+            </div>
+            <strong>Copyright &copy; 2017 <a href="http://www.51talk.com">51talk</a>.</strong> All rights reserved.
+        </footer>
+
+        <aside class="control-sidebar control-sidebar-dark">
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#page-info" data-toggle="tab"><i class="fa fa-info-circle"></i>页面说明</a></li>
+                <li><a href="#help-info" data-toggle="tab"><i class="fa fa-gears"></i>操作说明</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="page-info">
+                    <h4 class="control-sidebar-heading">驾驶舱</h4>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                        压测开始前的主控页面，包括压测数据构造、节点操作、节点数据监控等
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h4 class="control-sidebar-heading">停机坪</h4>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                        压测负载机管理页面，可对负载机进行增删改查操作，只有状态为启用的slave机会被用于压测
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h4 class="control-sidebar-heading">Locust</h4>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                        Locust压测管理监控页面，可启动/停止压测，展示汇总后的实时压测数据
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h4 class="control-sidebar-heading">压测记录</h4>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                        记录每次压测的信息，包括并发数、RPS、图表曲线等，图表数据默认保存30天
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+
+                <div class="tab-pane" id="help-info">
+                    <h5 class="control-sidebar-heading">启动Master</h5>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-gears bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                    启动Master节点，默认已启动。访问Locust页面，如无法打开，则通过节点操作-重启Master
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <h5 class="control-sidebar-heading">启动Slave</h5>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-gears bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                    节点操作-重启slave：会启动停机坪中状态为启用的节点，压测节点数量为状态是启用的slave节点数总和，可通过驾驶舱页面的节点监控查看各slave节点的状态，初始状态Connected
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <h5 class="control-sidebar-heading">构造压测数据</h5>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-gears bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                    当Master和Slave已启动并且状态为connected，则可以开始构造压测数据；如需重新构造数据
+                                    则需要先重置数据，重置操作会初始化Master和Slave的状态，并清空各节点的数据
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <h5 class="control-sidebar-heading">开始压测</h5>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="menu-icon fa fa-gears bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">
+                                    压测数据构造完成后，即可点击开始压测按钮或者左侧导航Locust跳转到压测界面开始测试
+                                    </h4>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                        
+                </div>
+            </div>
+        </aside>
+
+        <div class="control-sidebar-bg"></div>
+    </div>
+
+    <div class="modal fade" id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="pwdModalLabel">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="password_form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="password1">新密码:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" type="password" name="password1" autocomplete="new-password" placeholder="请输入新密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="password2">确认:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" type="password" name="password2" autocomplete="new-password" placeholder="请再次输入新密码">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="sub_pwd_btn">提交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-primary fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+                    <h4 class="modal-title" id="myModalLabel">提示</h4> 
+                </div> 
+                <div class="modal-body text-center"></div> 
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+    
+    <!-- jQuery 2.2.3 -->
+    <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!--<script src="plugins/jQuery/jquery.tools.min.js"></script>-->
+    <!-- Bootstrap 3.3.6 -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Admin App -->
+    <script src="js/app.min.js"></script>
+    <!-- custom js -->
+    <script src="js/constant.min.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/chart.js"></script>
+    <!-- Plugin -->
+    <script type="text/javascript" src="js/formValidation.min.js"></script>
+    <script type="text/javascript" src="js/framework/bootstrap.js"></script>
+    <script type="text/javascript" src="js/iosOverlay.js"></script>
+    <script type="text/javascript" src="js/iziModal.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.jqote2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <!-- vintage theme of echarts -->
+    <script type="text/javascript" src="js/vintage.js"></script>
+    <script type="text/javascript" src="js/spin.min.js"></script>
+    <script src="plugins/date/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/handlebars-v3.0.1.js"></script>
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="plugins/iCheck/icheck.min.js"></script>
+    <script src="plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+</body>
+</html>

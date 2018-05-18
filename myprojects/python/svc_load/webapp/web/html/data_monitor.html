@@ -1,0 +1,430 @@
+
+        <div class="col-xs-20">
+            <div class="box">
+                <div class="box-header">
+                    <div class="page-header">
+                        <h4> 
+                            控制面板
+                            <div class="btn-group pull-right">
+                                <button id="op_node" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">节点操作 <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#" class="op_node" data-opcode="1">重启master</a></li>
+                                    <li><a href="#" class="op_node" data-opcode="2">停止master</a></li>
+                                    <li><a href="#" class="op_node" data-opcode="3">重启slaves</a></li>
+                                    <li><a href="#" class="op_node" data-opcode="4">停止slaves</a></li>
+                                    <li><a href="#" class="op_node" data-opcode="5">部署压测代码</a></li>
+                                    <li><a href="#" class="op_node" data-opcode="6">部署执行环境</a></li>
+                                    <!--<li><a href="#" class="op_node" data-opcode="7">强制重启全部</a></li>-->
+                                    <li><a href="#" class="op_node" data-opcode="8">同步压力机时间</a></li>
+                                </ul>
+                            </div>
+                        </h4>
+                        
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div class="col-lg-15 col-lg-offset-0">
+                        <form id="dataStructForm" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-1 control-label" for="teacher_scene">老师场景</label>
+                                <div class="col-lg-2 selectContainer">
+                                    <select name="teacher_scene" class="form-control selectpicker" multiple>
+                                        <option value="1">登陆</option>
+                                        <option value="2">进教室</option>
+                                        <option value="3">聊天</option>
+                                        <option value="4">教材翻页</option>
+                                        <option value="5">添加教材</option>
+                                        <option value="6">修改教材</option>
+                                        <option value="7">删除教材</option>
+                                        <option value="8">清空教材</option>
+                                        <option value="9">添加白板</option>
+                                        <option value="10">获取白板</option>
+                                        <option value="11">修改白板</option>
+                                        <option value="12">删除白板</option>
+                                        <option value="13">清空白板</option>
+                                    </select>
+                                </div>
+
+                                <label class="col-lg-1 control-label" for="student_scene">学生场景</label>
+                                <div class="col-lg-2">
+                                    <select id="student_scene" name="student_scene" class="form-control selectpicker" multiple>
+                                        <option value="1">登陆</option>
+                                        <option value="2">进教室</option>
+                                        <option value="14">获取画笔颜色</option>
+                                        <option value="15">举手</option>
+                                        <option value="16">放手</option>
+                                        <option value="17">聊天</option>
+                                    </select>
+                                </div>
+
+                                <label class="col-lg-3 control-label" style="width:auto">
+                                    <input type="checkbox" name="include_static_stu" value="1" checked>
+                                    包含静态学生
+                                </label>
+                                <label class="col-lg-2 control-label" style="width:auto;">
+                                    <input type="checkbox" name="is_random" value="1">
+                                    随机压测数据
+                                    </i>
+                                </label>
+                                <label class="col-lg-2 control-label" style="width:auto">
+                                    <input type="checkbox" name="is_push" value="1">
+                                    Push
+                                    <i class="help-tip fa fa-question-circle">
+                                        <p>
+                                        1、静态学生：进教室后没有任何操作的学生，课程结束后退出教室<br>
+                                        2、场景默认选择全部<br>
+                                        3、每个教室中包含一个老师，其他为学生,如果勾选静态学生，动态与静态学生比例基本为1:1<br>
+                                        4、1V1教室中没有静态学生<br>
+                                        5、更换场景后需要重新构造数据<br>
+                                        6、如果选择教室内操作的场景则必须选择登陆与进教室，否则不会产生调用<br>
+                                        7、如果不勾选随机数据，则压测数据为0~N(N=total)顺序值，方便后续压测重用<br>
+                                        8、勾选push则接受推送消息，登陆才可收到<br>
+                                        </p>
+                                    </i>
+                                </label>
+                                
+                            </div>
+                                
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label class="col-lg-1 control-label">课程类型</label>
+                                <div class="col-lg-2">
+                                    <select class="class_type form-control" name="class_type" title="-请选择-">
+                                        <option value="0">1V1</option>
+                                        <option value="12">B2S</option>
+                                    </select>
+                                </div>
+                                <label class="col-lg-1 control-label">课程数量</label>
+                                <div class="col-lg-2">
+                                    <input class="form-control" type="text" name="class_count" />
+                                </div>
+                                <label class="col-lg-1 control-label">单课人数</label>
+                                <div class="col-lg-2">
+                                    <input class="form-control" type="text" name="user_count" />
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="btn-group">
+                                        <button id="add-more" type="button" class="btn btn-default">Add more</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- input组件模板 -->
+                            <div class="form-group" id="template" style="display: none;">
+                                <label class="col-lg-1 control-label">课程类型</label>
+                                <div class="col-lg-2">
+                                    <select class="form-control" title="-请选择-">
+                                        <option value="0">1V1</option>
+                                        <option value="12">B2S</option>
+                                    </select>
+                                </div>
+                                <label class="col-lg-1 control-label">课程数量</label>
+                                <div class="col-lg-2">
+                                    <input class="form-control" type="text" />
+                                </div>
+                                <label class="col-lg-1 control-label">单课人数</label>
+                                <div class="col-lg-2">
+                                    <input class="form-control" type="text" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-link removeButton">Remove</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-offset-3 col-lg-9">
+                                    <button type="submit" class="btn btn-primary" id="start_hatch" >
+                                        <i class="glyphicon glyphicon-flash"></i> 
+                                        开始造数据
+                                    </button>&nbsp&nbsp
+                                    <button type="button" class="btn btn-warning" id="reset">
+                                        <i class="fa fa-undo"></i> 
+                                        重置数据
+                                    </button>&nbsp&nbsp
+                                    <button type="button" class="btn btn-primary" id="start_locust">
+                                        <i class="fa fa-rocket"></i> 
+                                        开始压测
+                                    </button>
+
+                                </div>
+                            </div>
+                        </form>
+		            </div>
+                </div>
+            </div>
+
+        </div>
+
+    <!--<div class="row">-->
+        <div class="col-xs-20" sytle="margin-top:-10px">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">各压力节点监控</h3>
+                </div>
+                <div class="box-body" id="div-table-container">
+                    <table id="data-table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>节点ID</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>CPU%</th>
+                                <th>内存%</th>
+                                <th>负载</th>
+                                <th>最大数据量</th>
+                                <th>当前数据量</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <!-- tbody是必须的 -->
+                    </table>
+                </div>
+            </div>
+        <!--</div>-->
+    </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+        //select
+        $('.selectpicker').selectpicker(CONSTANT.SELECT_OPTION);
+        $('.selectpicker').selectpicker('selectAll');
+        $('.class_type').selectpicker({width: '153px'});
+        
+        //checkbox
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+            increaseArea: '-10%' // optional
+        });
+
+        $('#reset').on('click', function(){
+            var url = CONSTANT.URL.SVC.SLAVE_RESET_URL;
+            request(url, "GET", 1);
+            $("#dataStructForm").data('formValidation').resetForm();
+            $('input[type="text"]').val('');
+            // $('.selectpicker').selectpicker('selectAll');
+            $('.class_type').val('');
+            $('.class_type').selectpicker('render');
+        })
+
+        $("#start_locust").on('click', function(){
+            $("#locust").trigger('click');
+        })
+
+        $('#add-more').on('click', function() {
+            var $that     = $(this),
+                $template = $('#template'),
+                $newRow   = $template.clone().removeAttr('id').insertBefore($template).show(),
+                $el = $newRow.find('.form-control');
+                $el.eq(0).attr('name', 'class_type')
+                    .addClass('class_type')
+                    .selectpicker({width: '153px'});
+                $el.eq(1).attr('name', 'class_count');
+                $el.eq(2).attr('name', 'user_count');
+
+            $newRow
+                .on('click', '.removeButton', function() {
+                    $('#dataStructForm').formValidation('removeField', $el);
+                    $newRow.remove();
+                });
+
+            // Add new field
+            $('#dataStructForm').formValidation('addField', $el, {
+                excluded: ":disabled",
+                icon: CONSTANT.VALIDATE_OPTION.icon,
+                validators: {
+                    notEmpty: {
+                        message: '必填'
+                    },
+                    integer: {
+                        message: '只支持整数'
+                    }
+                }      
+            });
+        });
+
+        //节点操作
+        $('.op_node').click(function(){
+            var opcode = $(this).data('opcode');
+            var op_json = {'opcode': opcode};
+            request(CONSTANT.URL.SVC.OP_NODE_URL, 'POST', op_json);
+        })
+
+        //表单校验
+        $('#dataStructForm').formValidation({
+            button: {
+                selector: '#start_hatch',
+                disabled: 'disabled'
+            },
+            excluded: ':disabled',
+            live: "enabled",
+            icon: CONSTANT.VALIDATE_OPTION.icon,
+            fields: {
+                user_count: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        digits: {
+                            message: '只支持整数'
+                        }
+                    }
+                },
+                class_count: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        integer: {
+                            message: '只支持整数'
+                        }
+                    }
+                },
+                class_type: {
+                    icon: false,
+                    validators: {
+                        notEmpty: {
+                            message: '请选择'
+                        }
+                    }
+                },
+                teacher_scene: {
+                    icon: false,
+                    validators: {
+                        notEmpty: {
+                            message: '最少选择一项'
+                        }
+                    }
+                },
+                student_scene: {
+                    icon: false,
+                    message: 'at least one',
+                    validators: {
+                        notEmpty: {
+                            message: '最少选择一项'
+                        }
+                    }
+                },
+
+            }
+        })
+        .on('err.form.fv', function(e, data) {
+            e.preventDefault();
+        })
+        .on('success.form.fv', function(e, data) {
+            var url = CONSTANT.URL.SVC.START_HATCH_URL;
+            var data = $('#dataStructForm').serialize();
+            request(url, 'POST', data);
+            e.preventDefault();
+        });
+
+});
+</script>
+<script>
+    var dtable;
+    var editFlag = false;
+    $(function() {
+        $.fn.dataTable.ext.errMode = 'throw';
+        dtable = $('#data-table').DataTable({
+            ajax: {
+                url: CONSTANT.URL.SVC.DATA_STAT_URL,
+                dataType: 'json',
+                dataSrc: 'data'
+            },
+            "lengthMenu": [
+                   [20, 30, 50, -1],
+                   [20, 30, 50, "All"]
+               ],//每页显示条数设置
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "bFilter": false, //列筛序功能
+            "searching": true,//本地搜索
+            "ordering": true, //排序功能
+            "Info": true,//页脚信息
+            "autoWidth": true,//自动宽度
+            "serverSide": false,//该选项可控制分页与搜索是否请求后端服务控制，false则dt本地自动控制
+            "pagingType": "full",
+            columns: [
+                {"data": "id"}, 
+                {"data": "role"}, 
+                // {"data": "state"}, 
+                { //state
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        var state_label;
+                        switch (row.state) {
+                            case "connected":
+                                state_label = "label label-primary";
+                                break;
+                            case "ready":
+                                state_label = "label label-warning";
+                                break;
+                            case "running":
+                                state_label = "label label-info";
+                                break;
+                            case "done":
+                                state_label = "label label-success";
+                                break;
+                            default:
+                                state_label = "label label-primary";
+                                break;
+                        }
+                        return '<span class="' + state_label + '">' + row.state + '</span>'; 
+                    }
+                },
+                {"data": "cpu_percent"},
+                {"data": "mem_percent"},
+                {"data": "loadavg"},
+                {"data": "qsize"},
+                {"data": "data_count"}
+            ],
+            
+            "language": {
+                "search": "搜索",
+                "lengthMenu": "_MENU_ 条记录每页",
+                "zeroRecords": "没有找到记录",
+                // "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "first": "首页",
+                    "last": "末页"
+                }
+            },
+            "dom": "<'row'<'col-md-2'l><'#mytool.col-md-4'><'col-md-6'f>r>" +
+                "t" +
+                "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            initComplete: function() {
+                // $("#mytool").append('<button type="button" class="btn btn-primary" id="refresh"><i class="glyphicon glyphicon-refresh"></i> 刷新</button>')
+                // $("#refresh").click(reload_table);
+                $("#mytool").append('<div class="switch" data-on="success" data-off="info" ><span>刷新&nbsp&nbsp</span><input id="refresh_switch" type="checkbox" checked /></div>')
+                 $("#refresh_switch").bootstrapSwitch({
+                     size: 'small',
+                     onSwitchChange: function(e, state) {
+                        if(state){
+                            TIMER = setInterval(reload_table, 3000);
+                            return
+                        }
+                        clearInterval(TIMER);
+                     }
+                 });
+            }
+
+        });
+     
+    });
+
+    function reload_table(){
+        dtable.ajax.reload();
+        // setTimeout(reload_table, 3000);
+    }
+    TIMER = setInterval(reload_table, 3000);
+
+</script>

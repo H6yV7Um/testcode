@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vdcoding.modules.superman.dao.CustomerTokenDao">
+
+	<select id="queryByCustomerId" resultType="CustomerToken">
+		SELECT * FROM app_customer_token WHERE customer_id = #{value}
+	</select>
+
+	<select id="queryByToken" resultType="CustomerToken">
+		SELECT * FROM app_customer_token WHERE token = #{value}
+	</select>
+	 
+	<insert id="save" parameterType="CustomerToken">
+		INSERT INTO app_customer_token
+		(
+			`customer_id`, 
+			`token`, 
+			`expire_time`, 
+			`update_time`
+		)
+		VALUES
+		(
+			#{customerId}, 
+			#{token}, 
+			#{expireTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="CustomerToken">
+		UPDATE app_customer_token
+		<set>
+			<if test="token != null">`token` = #{token}, </if>
+			<if test="expireTime != null">`expire_time` = #{expireTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		WHERE customer_id = #{customerId}
+	</update>
+
+</mapper>

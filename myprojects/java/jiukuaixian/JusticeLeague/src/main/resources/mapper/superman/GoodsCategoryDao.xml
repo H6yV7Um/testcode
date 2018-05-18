@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.vdcoding.modules.superman.dao.GoodsCategoryDao">
+	<select id="getShowCategory" resultType="GoodsCategory">
+		SELECT id, name, shop_id, seq, type, is_show FROM app_category WHERE shop_id=#{value} AND is_show = 1
+	</select>
+	
+	<update id="update" parameterType="GoodsCategory">
+		UPDATE app_category
+		<set> 
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="seq != null">`seq` = #{seq}, </if>
+			<if test="shopId != null">`shop_id` = #{shopId}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="isShow != null">`is_show` = #{isShow}, </if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="save" parameterType="GoodsCategory">
+		INSERT INTO app_category
+		(
+			`id`,
+			`name`,
+			`seq`,
+			`shop_id`,
+			`type`,
+			`is_show`
+		)
+		VALUES
+		(
+			#{id},
+			#{name},
+			#{seq},
+			#{shopId},
+			#{type},
+			#{isShow}
+		)
+	</insert>
+	
+	<delete id="delete">
+		DELETE FROM app_category WHERE id=#{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		DELETE FROM app_category WHERE menu_id IN 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		;
+		delete from sys_role_menu where menu_id in 
+		<foreach item="menuId" collection="array" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+	</delete>
+	
+</mapper>  

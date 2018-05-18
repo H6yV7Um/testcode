@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="-1" guice-stage="DEVELOPMENT" name="Failed suite [Suite1]">
+  <test name="Regression1(failed)">
+    <groups>
+      <run>
+        <include name="all"/>
+        <include name="p1"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.vdcoding.testngDemo.tests.StandardTest">
+        <methods>
+          <include name="test"/>
+        </methods>
+      </class> <!-- com.vdcoding.testngDemo.tests.StandardTest -->
+    </classes>
+  </test> <!-- Regression1(failed) -->
+</suite> <!-- Failed suite [Suite1] -->

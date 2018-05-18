@@ -1,0 +1,300 @@
+syntax = "proto3";
+package svctest;
+
+//compile cmd: protoc --python_out=./ ProtoBody.proto
+
+//获取接入服务器地址 0x00300012  0x00300013
+message PbLoadBalancing{
+  uint32 cli_type = 1;
+  repeated bytes device_id = 2;
+  string app_id = 3;
+}
+message PbLoadBalancingRsp{
+  message AccAddr{
+    uint32 ip = 1;
+    repeated uint32 ports = 2;
+  }
+  uint32 rsp_code = 1;
+  repeated AccAddr acc_addrs = 2;
+  repeated AccAddr http_addrs = 3;
+}
+
+//获取心跳配置  0x00310012  0x00310013
+message GetHeartBeatConf{
+  uint32 cli_type = 1;
+}
+message GetHeartBeatConfRsp{
+  uint32 version = 1;
+  uint32 send_sec = 2;
+  uint32 check_sec = 3;
+  uint32 bt_timeout = 4;
+}
+
+//客户端上报心跳版本 0x00310014  0x00310015
+message ClientReportHbConf{
+  uint32 version = 1;
+}
+message ClientReportHbConfRsp{
+  uint32 version = 1;
+}
+
+//客户端接入 0x00310020  0x00310021
+message ClientAccess{
+  string app_id = 1;
+  uint32 cli_type = 2;
+  string cli_version = 3;
+  uint32 cli_os_ver = 4;
+  string cli_mac = 5;
+  bytes device_id = 6;
+}
+message ClientAccessRsp{
+  uint32 rsp_code = 1;
+  repeated uint32 secret_key = 2;
+  uint32 cli_pub_ip = 3;
+  uint64 net_time = 4;
+  string upgrade_info = 5;
+}
+
+//用户账号登陆  0x00310024  0x00310025
+message UserLogin{
+  uint32 account_type = 1;
+  string account = 2;
+  repeated uint32 auth_ticket = 3;
+  uint32 online_status = 4;
+  uint32 cli_type = 5;
+  repeated bytes device_id = 6;
+  string app_id = 7;
+}
+message UserLoginRsp{
+  uint32 rsp_code = 1;
+  uint64 uid = 2;
+  uint32 online_status = 3;
+  string token = 4;
+  string refresh_token = 5;
+}
+//获取匿名登录账号  0x00310026  0x00310027
+message GetAnonymousUid{}
+message GetAnonymousUidRsp{
+  uint32 rsp_code = 1;
+  uint64 uid = 2;
+}
+
+//匿名用户登陆  0x00310028  0x00310029
+message AnonymousLogin{
+  uint64 uid = 1;
+  uint32 online_status = 2;
+  uint32 cli_type = 3;
+  repeated bytes device_id = 4;
+  string app_id = 5;
+}
+message AnonymousLoginRsp{
+  uint32 rsp_code = 1;
+  uint64 uid = 2;
+  uint32 online_status = 3;
+  string token = 4;
+  string refresh_token = 5;
+}
+
+//登陆完成请求  0x0031002A
+message LoginComplete{}
+
+//用户登出  0x0031002C  0x0031002D
+message UserLogout{}
+message UserLogoutRsp{}
+
+//用户token登陆 0x00310030  0x00310031
+message TokenLogin{
+  uint64 uid = 1;
+  string token = 2;
+  uint32 online_status = 3;
+  uint32 cli_type = 4;
+  repeated bytes device_id = 5;
+  string app_id = 6;
+}
+message  TokenLoginRsp{
+  uint32 rsp_code = 1;
+  uint64 uid = 2;
+  uint32 online_status = 3;
+}
+
+//通过refresh token更新token 0x00310032 0x00310033
+message UpdateToken{
+  string refresh_token = 1;
+  uint32 cli_type = 2;
+  repeated bytes device_id = 3;
+  string app_id = 4;
+}
+message UpdateTokenRsp{
+  uint32 rsp_code = 1;
+  string token = 2;
+  string refresh_token = 3;
+}
+
+//通过refresh token更新refresh token 0x00310034 0x00310035
+message UpdateRefreshToken{
+  string refresh_token = 1;
+  uint32 cli_type = 2;
+  repeated bytes device_id = 3;
+  string app_id = 4;
+}
+message UpdateRefreshTokenRsp{
+  uint32 rsp_code = 1;
+  string refresh_token = 2;
+}
+
+//进入房间  0x00380020  0x00380021
+message EnterClass{
+  string user_name = 1;
+  string cus_data = 2;
+}
+message EnterClassRsp{
+  message UserSimpleInfo{
+    uint64 uid = 1;
+    string usre_name = 2;
+    string cus_data = 3;
+    uint32 identity =4;
+    uint32 user_right = 5;
+    uint32 cli_type = 6;
+    uint32 online_status = 7;
+    uint32 enter_seq = 8;
+  }
+  uint32 rsp_code = 1;
+  string name = 2;
+  string description = 3;
+  string url = 4;
+  uint64 owner_id = 5;
+  uint32 status = 6;
+  repeated UserSimpleInfo admin_list = 7;
+  repeated UserSimpleInfo user_list = 8;
+}
+
+//进入房间通知，通知房间内的其他人  0x00380022
+message EnterClassNotify{
+  uint64 uid = 1;
+  string user_name = 2;
+  string cus_data = 3;
+  uint32 identity = 4;
+  uint32 user_right = 5;
+  uint32 cli_type = 6;
+  uint32 online_status = 7;
+  uint32 enter_seq = 8;
+}
+
+//进入房间完成  0x00380023
+message EnterClassComplete{}
+
+//离开房间  0x00380024  0x00380025
+message LeaveClass{}
+message LeaveClassRsp{}
+
+//离开房间通知  0x00380026
+message LeaveClassNotify{}
+
+//强制离开房间  0x00380028  0x00380029
+message ForceLeaveClass{
+  uint64 uid = 1;
+  uint32 reason = 2;
+}
+message ForceLeaveClassRsp{
+  uint32 rsp_code = 1;
+  uint64 uid = 2;
+  uint32 reason = 3;
+}
+
+//强制离开房间通知  0x0038002A  
+message ForceLeaveClassNotify{
+  uint64 op_uid = 1;
+  uint32 op_uid_identify = 2;
+  uint64 uid = 3;
+  uint32 reason = 4;
+}
+
+//关闭房间  0x0038002C  0x0038002D
+message CloseClass{
+  uint32 reason = 1;
+}
+message CloseClassRsp{
+  uint32 rsp_code = 1;
+  uint32 reason = 2;
+}
+
+//房间关闭通知  0x0038002E
+message CloseClassNotify{
+  uint64 op_uid = 1;
+  uint32 op_uid_identify = 2;
+  uint32 reason = 3;
+}
+
+//发送聊天消息  0x00380070  0x00380071
+message UserSendMessage{
+  uint32 cli_seq = 1;
+  uint64 send_tm = 2;
+  uint32 type = 3;
+  string option = 4;
+  string chat_msg = 5;
+}
+message UserSendMessageRsp{
+  uint32 cli_seq = 1;
+  uint32 status = 2;
+  uint64 msg_id = 3;
+  uint64 send_tm = 4;
+}
+
+//下发聊天消息  0x00380072  0x00380073
+message UserReceiveMessage{
+  uint64 msg_id = 1;
+  uint64 source_uid = 2;
+  uint64 send_tm = 3;
+  uint32 type = 4;
+  string option = 5;
+  string chat_msg = 6;
+}
+message UserReceiveMessageRsp{
+  uint64 msg_id = 1;
+}
+
+//下发离线聊天消息  0x00380074
+message ReceiveOfflineMessage{
+  message ChatMsg{
+    uint64 msg_id = 1;
+    uint64 source_uid = 2;
+    uint64 send_tm = 3;
+    uint32 type = 4;
+    string option = 5;
+    string chat_msg = 6;
+  }
+  repeated ChatMsg msg_list = 1;
+}
+
+//举手（添加到发言队列最尾） 0x00380090  0x00380091
+message HandUp{}
+message HandUpRsp{
+  uint32 rsp_code = 1;
+}
+
+//放手（从发言队列移除） 0x00380092  0x00380093
+message HandDown{}
+message HandDownRsp{
+  uint32 rsp_code = 1;
+}
+
+//变更发言列表  0x00380094  0x00380095
+message ChangeSpeakOrder{
+  uint32 op_type = 1;
+  uint64 target_uid = 2;
+}
+message ChangeSpeakOrderRsp{
+  uint32 rsp_code = 1;
+  uint32 op_type = 2;
+  uint64 target_uid = 3;
+}
+
+//发言列表变更通知  0x00380096
+message ChangeSpeakOrderNotify{
+  uint32 op_type = 1;
+  uint64 target_uid = 2;
+  uint64 op_uid = 3;
+  uint32 op_uid_identify = 4;
+  uint32 allow_speak_num = 5;
+  repeated uint64 uid_list = 6;
+}

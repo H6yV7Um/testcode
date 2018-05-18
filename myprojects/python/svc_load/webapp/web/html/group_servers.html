@@ -1,0 +1,459 @@
+
+        <div class="col-xs-20">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">测试服务器管理</h3>
+                </div>
+                <div class="box-body" id="div-table-container">
+                    <table id="server_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="checkAll">
+                                </th>
+                                <th>IP</th>
+                                <th>Owner</th>
+                                <th>用途</th>
+                                <th>类型</th>
+                                <th>CPU信息</th>
+                                <th>内存</th>
+                                <th>硬盘</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+        
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal col-lg-offset-0" role="form" id="server_form">
+                    <input type="text" id="id" style="display:none;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="server_ip"><span
+                                        class="red-asterisk"></span>IP:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="server_ip" name="server_ip" placeholder="输入机器IP">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="owner">Owner:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="owner" name="owner" placeholder="输入使用者姓名">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="usage"><span
+                                        class="red-asterisk"></span>用途:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="usage" name="usage" placeholder="输入机器用途">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="server_type">类型:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="server_type" name="server_type">
+                                <option value="">--请选择--</option>
+                                <option value="1">虚拟机</option>
+                                <option value="2">物理机</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="cpu">CPU:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="cpu" name="cpu" placeholder="例如:8个/4核/2.5GHz">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="memory">内存:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="memory" name="memory" placeholder="输入内存总计,例如:8G">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="disk">硬盘:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="disk" name="disk" placeholder="输入硬盘大小,例如:500G">
+                        </div>
+                    </div>
+
+                    <button type="reset" id="reset" class="btn" style="display:none;opacity: 0.1;">.</button>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="save">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+    <!-- delete message modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+                    <h4 class="modal-title" id="myModalLabel">提示</h4> 
+                </div> 
+                <div class="modal-body text-center">
+                    <h4>确认要删除这条记录么?</h4>
+                </div> 
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="confirm-btn">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+
+</div>
+
+<!--定义操作列按钮模板-->
+<script id="tpl" type="text/x-handlebars-template">
+    {{#each func}}
+    <button type="button" class="btn btn-{{this.type}} btn-sm" onclick="{{this.fn}}">{{this.name}}</button> 
+    {{/each}}
+</script>
+
+<script>
+    var table;
+    var editFlag = false;
+    $(function() {
+        // $('#start_date').datetimepicker();
+        var tpl = $("#tpl").html();
+        //预编译模板
+        var template = Handlebars.compile(tpl);
+        $.fn.dataTable.ext.errMode = 'throw';
+        table = $('#server_table').DataTable({
+            ajax: {
+                url: CONSTANT.URL.TestGroup.SERVER_LIST_URL,
+                dataType: 'json',
+                dataSrc: 'data'
+            },
+            order: [[1, 'asc'],],
+            "processing": false,
+            "lengthMenu": [
+                   [10, 30, 50, -1],
+                   [10, 30, 50, "All"]
+               ],//每页显示条数设置
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "bFilter": false, //列筛序功能
+            "searching": true,//本地搜索
+            "ordering": true, //排序功能
+            "Info": true,//页脚信息
+            "autoWidth": true,//自动宽度
+            "serverSide": false,//该选项可控制分页与搜索是否请求后端服务控制，false则dt本地自动控制
+            "pagingType": "full_numbers",
+            columns: [
+                { //复选框单元格
+                    // className: "td-checkbox",
+                    // orderable: false,
+                    // width: "30px",
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return '<input class="icheckbox_flat-green" name="checkList" type="checkbox" data-id="' + row.id + '">';
+                    }
+                },
+                {"data": "server_ip"}, 
+                {"data": "owner"}, 
+                {"data": "usage"},
+                {"data": "server_type"}, 
+                {"data": "cpu"},
+                {"data": "memory"},
+                {"data": "disk"},
+                {"data": null}
+            ],
+            columnDefs: [
+                {
+                    targets: 8,
+                    render: function(a, b, c, d) {
+                        var param_str = "'{server_ip}','{owner}','{usage}','{server_type}','{cpu}','{memory}','{disk}','{id}'".format(c)
+                        var context = {
+                            func: [
+                                {
+                                "name": "修改",
+                                "fn": "edit(" + param_str + ")",
+                                "type": "primary"
+                                }, 
+                                // {
+                                // "name": "删除",
+                                // "fn": "confirm(\'" + c.id + "\')",
+                                // "type": "danger"
+                                // }
+                            ]
+                        };
+                        var html = template(context);
+                        return html;
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function(a, b, c, d){
+                        var text = $("#server_type").find("option").eq(c.server_type).text();
+                        return text;
+                    }
+                }
+            ],
+            "language": {
+                "sProcessing" : "正在获取数据...",  
+                "search": "搜索",
+                "lengthMenu": "_MENU_ 条记录每页",
+                "zeroRecords": "没有找到记录",
+                // "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "first": "首页",
+                    "last": "末页"
+                }
+            },
+            "dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>" +
+                "t" +
+                "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            initComplete: function() {
+                $("#mytool").append('<button type="button" class="btn btn-primary" id="add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> 添加</button>&nbsp&nbsp')
+                $("#mytool").append('<button type="button" class="btn btn-danger" id="batch_del"><i class="fa fa-remove"></i>删除</button>')
+                $("#batch_del").click(function () {
+                    var datas = table.rows('.selected').data();
+                    var id_arr = new Array();
+                    if(datas.length == 0){
+                        $('#errorModal div.modal-body').text("请选择要删除的记录！");
+                        $('#errorModal').modal({
+                            keyboard: true
+                        });
+                        return;
+                    }
+                    for (var i = 0; i < datas.length; i++) {
+                        var data = datas[i];
+                        id_arr.push(data.id)
+                    }
+                    // console.log(id_arr);
+                    deleteRow(id_arr.join(','));
+                    $("#checkAll").attr('checked', false);
+                });
+            }
+        });
+    });
+
+    function resetModal() {
+        $("#myModalLabel").text("新增");
+        $("#reset").trigger('click');
+        editFlag = false;
+    }
+
+    $("#myModal").on('hide.bs.modal', function(){
+        resetModal();
+        $("#id").removeAttr('name');
+        $("#server_form").data('formValidation').resetForm();
+    });
+    
+    function add() {
+        data = $("#server_form").serialize();
+        updateClient(data);
+    }
+
+    function edit(server_ip,owner,usage,server_type,cpu,memory,disk,id) {
+        editFlag = true;
+        $("#id").attr('name','id').val(id);
+        $("#myModalLabel").text("修改");
+        $("#server_ip").val(server_ip);
+        $("#server_type").find("option").eq(server_type).prop("selected", "true");
+        $("#owner").val(owner);
+        $("#usage").val(usage);
+        $("#cpu").val(cpu);
+        $("#memory").val(memory);
+        $("#disk").val(disk);
+        $("#myModal").modal("show");
+        
+    }
+
+    function updateClient(data) {
+        var url = CONSTANT.URL.TestGroup.ADD_SERVER_URL;
+        if (editFlag) {
+            url = CONSTANT.URL.TestGroup.UPDATE_SERVER_URL;
+        }
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 1){
+                    table.ajax.reload();
+                    $("#myModal").modal("hide");
+                }
+                else{
+                    $("#myModal").modal("hide");
+                    $('#errorModal div.modal-body').text(response.msg);
+                    $('#errorModal').modal({
+                        keyboard: true
+                    });
+                }
+                
+            },
+            error: function(){
+                $("#myModal").modal("hide");
+                $('#errorModal div.modal-body').text("internal error!");
+                $('#errorModal').modal({
+                    keyboard: true
+                });
+            }
+        });
+    }
+
+    function confirm(id){
+        $('#confirmModal').data('id', id);
+        $('#confirmModal').modal('show');
+    }
+
+    $("#confirm-btn").click(function(){
+        id = $('#confirmModal').data('id');
+        deleteRow(id);
+    })
+
+    function deleteRow(id) {
+        $.ajax({
+            url: CONSTANT.URL.TestGroup.DELETE_SERVER_URL,
+            type: "POST",
+            data: {
+                "id": id
+            },
+            success: function(data) {
+                table.ajax.reload();
+                console.log("删除成功" + data);
+            }
+        });
+    }
+
+    //点击任意行单选
+    $('#server_table tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+            $(this).find("input[name='checkList']").prop("checked", false);
+        } 
+        else {
+            $(this).addClass('selected');
+            $(this).find("input[name='checkList']").prop("checked", true);
+        }
+    });
+
+    // $('#checkAll').iCheck({
+    //     checkboxClass: 'icheckbox_square-green',
+    //     radioClass: 'iradio_square-green',
+    //     increaseArea: '-10%' // optional
+    // });
+
+    //checkbox全选
+    $("#checkAll").on("click", function () {
+        if ($(this).prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+            $('#server_table tbody tr').addClass('selected');
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#server_table tbody tr').removeClass('selected');
+        }
+    });
+
+    $('#server_form').formValidation({
+            button: {
+                selector: '#save',
+                disabled: 'disabled'
+            },
+            live: "enabled",
+            message: 'This value is not valid',
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                server_ip: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入机器IP'
+                        },
+                        ip: {
+                            message: 'IP格式不正确'
+                        }
+                    }
+                },
+                server_type: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '请选择机器类型'
+                        },
+                        integer: {
+                            message: '只支持整数'
+                        }
+                    }
+                },
+                // owner: {
+                //     validators: {
+                //         notEmpty: {
+                //             message: '请输入机器使用人'
+                //         }
+                //     }
+                // },
+                // usage: {
+                //     validators: {
+                //         notEmpty: {
+                //             message: '请输入机器用途'
+                //         }
+                //     }
+                // },
+                cpu: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入cpu信息'
+                        }
+                    }
+                },
+                memory: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入内存大小'
+                        }
+                    }
+                },
+                disk: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入硬盘大小'
+                        }
+                    }
+                },
+            }
+        })
+        .on('err.form.fv', function(e, data) {
+            e.preventDefault();
+        })
+        .on('success.form.fv', function(e, data) {
+            add();
+            e.preventDefault();
+        });
+        
+</script>

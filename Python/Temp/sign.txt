@@ -1,0 +1,21 @@
+GET http://event.wanmei.com/csgo/wxplatform/sign?r=0.029192996882969946 HTTP/1.1
+Host: event.wanmei.com
+Accept-Encoding: gzip, deflate
+Cookie: JSESSIONID=B9DEEBC0BA445BCE8ECABA72E242884B; Hm_lpvt_69fae2e80f54618b006b557e1d2b3159=1517303973; Hm_lvt_69fae2e80f54618b006b557e1d2b3159=1517041589,1517100711,1517222149,1517303973; __mtxcar=(direct):(none); __mtxsd=dacfbccf.1517303973187.0.1; __mtxud=3f930e11fba3f8ca.1509439473214.1517222149074.1517303973182.66; wx_pw=oZDRm43JsKy6pujw532iBj13g1uS*ix9QjfuOk5A8XpZ3fQjfyY7Id1w24T9Xci42yZTnjcbvhfG6ykaNmZLJCh3PC-IkQ73o-FZpnEfrQqvKb4ji0LRIz6PdMvpFnea2XfMIvAfzY70ubXz5LmiRAutbx4qafzMbIFrsWFPd-RciRO2loe4xaLxAzN*cx*Pz*anL6BQoJHsXxrl58fIESuGCS-UIEsA84sG4X850Vh8qiytL5Q-AqFEzHSfC09aP*xqUBTdUtns9bYB4Jw4aeuxCreddim*LZ4oHuyNETDIyflGTWWStMQ90Oh9FI5Q; __mtxsr=csr:(direct)|cdt:(direct)|advt:(none)|camp:(none)
+Connection: keep-alive
+Connection: keep-alive
+Accept: application/json, text/javascript, */*; q=0.01
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C202 MicroMessenger/6.5.20 NetType/WIFI Language/zh_CN
+Referer: http://event.wanmei.com/csgo/wxplatform/index?param=1
+Accept-Language: zh-cn
+X-Requested-With: XMLHttpRequest
+
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Tue, 30 Jan 2018 14:30:33 GMT
+Content-Type: application/json;charset=UTF-8
+Connection: keep-alive
+Content-Length: 49
+
+{"message":"今天已签到！ ","success":false}

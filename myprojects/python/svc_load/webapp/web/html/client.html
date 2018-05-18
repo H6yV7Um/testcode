@@ -1,0 +1,421 @@
+
+        <div class="col-xs-20">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">负载机管理</h3>
+                </div>
+                <div class="box-body" id="div-table-container">
+                    <table id="client_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkAll"></th>
+                                <th>负载机IP</th>
+                                <th>角色</th>
+                                <th>Slave节点数</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+        
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="client_form">
+                    <input type="text" id="id" style="display:none;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="client_ip"><span
+                                        class="red-asterisk">*</span>IP:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="client_ip" name="client_ip">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="role">角色:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="role" name="role">
+                                <option value="">--请选择--</option>
+                                <option value="1">Master</option>
+                                <option value="2">Slave</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="slave_count"><span
+                                        class="red-asterisk">*</span>节点数:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="slave_count" name="slave_count">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="status">状态:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="status" name="status">
+                                <option value="">--请选择--</option>
+                                <option value="1">启用</option>
+                                <option value="2">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="reset" id="reset" class="btn" style="display:none;opacity: 0.1;">.</button>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="save">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+    <!-- delete message modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+                    <h4 class="modal-title" id="myModalLabel">提示</h4> 
+                </div> 
+                <div class="modal-body text-center">
+                    <h4>确认要删除这条记录么?</h4>
+                </div> 
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="confirm-btn">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+
+</div>
+
+<!--定义操作列按钮模板-->
+<script id="tpl" type="text/x-handlebars-template">
+    {{#each func}}
+    <button type="button" class="btn btn-{{this.type}} btn-sm" onclick="{{this.fn}}">{{this.name}}</button> 
+    {{/each}}
+</script>
+
+<script>
+    var table;
+    var editFlag = false;
+    $(function() {
+        // $('#start_date').datetimepicker();
+        var tpl = $("#tpl").html();
+        //预编译模板
+        var template = Handlebars.compile(tpl);
+        $.fn.dataTable.ext.errMode = 'throw';
+        table = $('#client_table').DataTable({
+            ajax: {
+                url: CONSTANT.URL.SVC.CLIENT_LIST_URL,
+                dataType: 'json',
+                dataSrc: 'data'
+            },
+            order: [[2, 'asc'], [1, 'asc'], [4, 'asc']],
+            "processing": false,
+            "lengthMenu": [
+                   [10, 15, 20, -1],
+                   [10, 15, 20, "All"]
+               ],//每页显示条数设置
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "bFilter": false, //列筛序功能
+            "searching": true,//本地搜索
+            "ordering": true, //排序功能
+            "Info": true,//页脚信息
+            "autoWidth": true,//自动宽度
+            "serverSide": false,//该选项可控制分页与搜索是否请求后端服务控制，false则dt本地自动控制
+            "pagingType": "full_numbers",
+            columns: [
+                { //复选框单元格
+                    className: "td-checkbox",
+                    orderable: false,
+                    width: "30px",
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return '<input class="icheckbox_flat-green" name="checkList" type="checkbox" data-id="' + row.id + '">';
+                    }
+                },
+                {"data": "client_ip"}, 
+                {"data": "role"}, 
+                {"data": "slave_count"},
+                {"data": "status"}, 
+                {"data": null}
+            ],
+            columnDefs: [{
+                    targets: 5,
+                    render: function(a, b, c, d) {
+                        param_str = "'{id}','{client_ip}','{role}','{slave_count}','{status}'".format(c)
+                        var context = {
+                            func: [{
+                                "name": "修改",
+                                "fn": "edit(" + param_str + ")",
+                                "type": "primary"
+                            }, {
+                                "name": "删除",
+                                "fn": "confirm(\'" + c.id + "\')",
+                                "type": "danger"
+                            }]
+                        };
+                        var html = template(context);
+                        return html;
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function(a, b, c, d){
+                        var text = $("#status").find("option").eq(c.status).text();
+                        var state_label;
+                        if(c.status==1){
+                            state_label = "label label-success";
+                        }
+                        else{
+                            state_label = "label label-warning";
+                        }
+                        return '<span class="' + state_label + '">' + text + '</span>'; 
+                    }
+                },
+                {
+                    targets: 2,
+                    render: function(a, b, c, d){
+                        var text = $("#role").find("option").eq(c.role).text();
+                        return text;
+                    }
+                }
+            ],
+            "language": {
+                "sProcessing" : "正在获取数据...",  
+                "search": "搜索",
+                "lengthMenu": "_MENU_ 条记录每页",
+                "zeroRecords": "没有找到记录",
+                // "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "first": "首页",
+                    "last": "末页"
+                }
+            },
+            "dom": "<'row'<'col-xs-2'l><'#mytool.col-xs-4'><'col-xs-6'f>r>" +
+                "t" +
+                "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            initComplete: function() {
+                $("#mytool").append('<button type="button" class="btn btn-primary" id="add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> 添加</button>&nbsp&nbsp')
+                $("#mytool").append('<button type="button" class="btn btn-danger" id="batch_del"><i class="fa fa-remove"></i> 批量删除</button>')
+                $("#batch_del").click(function () {
+                    var datas = table.rows('.selected').data();
+                    var id_arr = new Array();
+                    if(datas.length == 0){
+                        $('#errorModal div.modal-body').text("请选择要删除的记录！");
+                        $('#errorModal').modal({
+                            keyboard: true
+                        });
+                        return;
+                    }
+                    for (var i = 0; i < datas.length; i++) {
+                        var data = datas[i];
+                        id_arr.push(data.id)
+                    }
+                    // console.log(id_arr);
+                    deleteRow(id_arr.join(','));
+                    $("#checkAll").attr('checked', false);
+                });
+            }
+        });
+    });
+
+    function resetModal() {
+        $("#myModalLabel").text("新增");
+        $("#reset").trigger('click');
+        editFlag = false;
+    }
+
+    $("#myModal").on('hide.bs.modal', function(){
+        resetModal();
+        $("#id").removeAttr('name');
+        $("#client_form").data('formValidation').resetForm();
+    });
+    
+    function add() {
+        data = $("#client_form").serialize();
+        updateClient(data);
+    }
+
+    function edit(id, client_ip, role, slave_count, status) {
+        editFlag = true;
+        $("#myModalLabel").text("修改");
+        $("#id").attr('name','id').val(id);
+        $("#client_ip").val(client_ip);
+        $("#role").find("option").eq(role).prop("selected", "true");
+        $("#slave_count").val(slave_count);
+        $("#status").find("option").eq(status).prop("selected", "true");
+        $("#myModal").modal("show");
+        
+    }
+
+    function updateClient(data) {
+        var url = CONSTANT.URL.SVC.ADD_CLIENT_URL;
+        if (editFlag) {
+            url = CONSTANT.URL.SVC.UPDATE_CLIENT_URL;
+        }
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 1){
+                    table.ajax.reload();
+                    $("#myModal").modal("hide");
+                }
+                else{
+                    $("#myModal").modal("hide");
+                    $('#errorModal div.modal-body').text(response.msg);
+                    $('#errorModal').modal({
+                        keyboard: true
+                    });
+                }
+                
+            },
+            error: function(){
+                $("#myModal").modal("hide");
+                $('#errorModal div.modal-body').text("internal error!");
+                $('#errorModal').modal({
+                    keyboard: true
+                });
+            }
+        });
+    }
+
+    function confirm(id){
+        $('#confirmModal').data('id', id);
+        $('#confirmModal').modal('show');
+    }
+
+    $("#confirm-btn").click(function(){
+        id = $('#confirmModal').data('id');
+        deleteRow(id);
+    })
+
+    function deleteRow(id) {
+        $.ajax({
+            url: CONSTANT.URL.SVC.DELETE_CLIENT_URL,
+            type: "POST",
+            data: {
+                "id": id
+            },
+            success: function(data) {
+                table.ajax.reload();
+                console.log("删除成功" + data);
+            }
+        });
+    }
+
+    //点击任意行单选
+    $('#client_table tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+            $(this).find("input[name='checkList']").prop("checked", false);
+        } 
+        else {
+            $(this).addClass('selected');
+            $(this).find("input[name='checkList']").prop("checked", true);
+        }
+    });
+
+    //checkbox全选
+    $("#checkAll").on("click", function () {
+        if ($(this).prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+            $('#client_table tbody tr').addClass('selected');
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#client_table tbody tr').removeClass('selected');
+        }
+    });
+
+    $('#client_form').formValidation({
+            button: {
+                selector: '#save',
+                disabled: 'disabled'
+            },
+            live: "enabled",
+            message: 'This value is not valid',
+            icon: CONSTANT.VALIDATE_OPTION.icon,
+            fields: {
+                client_ip: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        ip: {
+                            message: 'IP格式不正确'
+                        }
+                    }
+                },
+                role: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        integer: {
+                            message: '只支持整数'
+                        }
+                    }
+                },
+                slave_count: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        digits: {
+                            message: '只支持整数'
+                        }
+                    }
+                },
+                status: {
+                    message: 'The field is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填'
+                        },
+                        digits: {
+                            message: '只支持整数'
+                        }
+                    }
+                }
+            }
+        })
+        .on('err.form.fv', function(e, data) {
+            e.preventDefault();
+        })
+        .on('success.form.fv', function(e, data) {
+            add();
+            e.preventDefault();
+        });
+        
+</script>

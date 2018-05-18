@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离   注意：使用mapper代理方法开发，namespace有特殊重要的作用  -->  
+<mapper namespace="com.vdcoding.modules.superman.dao.PageDao">
+
+	<resultMap id="pageResult" type="Page">
+		<id property="id" column="id"></id>
+		<!-- collection的属性column会作为参数传入子查询selectComponentData中 -->
+		<collection property="plugins" column="id" ofType="PagePlugin" select="selectPlugin">
+			<!-- 声明该对象（表）的的唯一标识，一般为数据表中的主键 -->
+			<id property="id" column="id"></id>
+		</collection>
+		
+		<collection property="components" column="id" ofType="PageComponent" select="selectComponent">
+			
+		</collection>
+		
+	</resultMap>
+	
+	<resultMap id="componentResult" type="PageComponent">
+		<id property="id" column="id"></id>
+		<collection property="data" column="id" ofType="ComponentData" select="selectComponentData">
+			
+		</collection>
+	</resultMap>
+	
+	<resultMap id="componentDataResult" type="ComponentData" autoMapping="true">
+		<id property="id" column="data_id"/>
+		<association property="targetId" javaType="ComponentTarget">
+			<id property="id" column="target_id"/>
+			<result property="content" column="content"/>
+			<result property="categoryId" column="category_id"/>
+		</association>
+	</resultMap>
+	
+	<select id="getPage" resultMap="pageResult">
+		SELECT * FROM app_page WHERE id=#{pageId}
+	</select>
+	
+	<select id="selectPlugin" resultType="PagePlugin">
+		SELECT * FROM app_page_plugin WHERE page_id=#{value}
+	</select>
+	
+	<select id="selectComponent" resultMap="componentResult">  
+        SELECT * FROM app_page_component WHERE page_id=#{value} AND is_use=1
+    </select>
+	
+	<select id="selectComponentData" resultMap="componentDataResult">
+		SELECT
+		a.`id` as data_id,
+		a.`component_id`,
+		a.`seq`,
+		a.`title`,
+		a.`action`,
+		a.`url`,
+		a.`icon_class`,
+		a.`icon_color`,
+		a.`icon_size`,
+		b.id as target_id,
+		b.`content`,
+		b.`category_id`
+		FROM app_component_data a
+		LEFT JOIN app_component_target b
+		ON a.`target_id`=b.`id`
+		WHERE a.component_id=#{value}
+	</select>
+	
+    
+    <!-- <update id="updateUser" parameterType="User">
+    	UPDATE user SET username=#{username},sex=#{sex},address=#{address} WHERE id=#{id}
+    </update>
+    <insert id="addUser" parameterType="map">
+    	INSERT INTO user (username, sex, address) VALUES(#{username},#{sex},#{address})
+    </insert> -->
+</mapper>  

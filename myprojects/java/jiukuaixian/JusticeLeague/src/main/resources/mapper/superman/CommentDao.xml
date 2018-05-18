@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.vdcoding.modules.superman.dao.CommentDao">
+	<resultMap type="GoodsComment" id="commentResult" autoMapping="true">
+		<id property="id" column="id"/>
+		<association property="customer" javaType="Customer">
+			<result property="nickName" column="nick_name"/>
+			<result property="avatarUrl" column="avatar_url"/>
+		</association>
+	</resultMap>
+    <select id="getComments" resultMap="commentResult">  
+        SELECT 
+		a.`id`,
+		a.`order_id`,
+		a.`customer_id`,
+		a.`goods_id`,
+		a.`shop_id`,
+		a.`comment`,
+		a.`star`,
+		a.`images`,
+		a.`create_time`,
+		a.`update_time`,
+		b.`order_time`,
+		d.`nick_name`,
+		d.`avatar_url`
+		FROM app_comment a
+		LEFT JOIN app_order b
+		ON b.id = a.`order_id`
+		LEFT JOIN app_goods c
+		ON b.`goods_id` = c.`id`
+		LEFT JOIN app_customer d
+		ON a.`customer_id` = d.`id`
+		WHERE a.`goods_id` = #{goodsId}
+		<choose>	
+			<when test="status.trim()=='GOOD'">
+				AND star=5
+			</when>
+			<when test="status.trim()=='NORMAL'">
+				AND star BETWEEN 3 AND 4
+			</when>
+			<when test="status.trim()=='BAD'">
+				AND star BETWEEN 1 AND 2
+			</when>
+		</choose>
+		LIMIT #{from},#{limit};
+    </select>
+    
+    <select id="getCommentsCount" parameterType="int" resultType="map">
+    	SELECT a.GOOD, b.NORMAL, c.BAD, d.ALL 
+		FROM 
+		(SELECT COUNT(1) AS GOOD, goods_id FROM app_comment WHERE star=5 AND goods_id=#{goodsId}) a
+		INNER JOIN
+		(SELECT COUNT(1) AS NORMAL, goods_id FROM app_comment WHERE star BETWEEN 3 AND 4 AND goods_id=#{goodsId}) b
+		INNER JOIN
+		(SELECT COUNT(1) AS BAD, goods_id FROM app_comment WHERE star BETWEEN 1 AND 2 AND goods_id=#{goodsId}) c
+		INNER JOIN
+		(SELECT COUNT(1) AS `ALL`, goods_id FROM app_comment WHERE goods_id=#{goodsId}) d;
+    </select>
+    
+    <delete id="delete" parameterType="int">
+    	DELETE FROM app_comment WHERE id=#{value};
+    </delete>
+    
+    <delete id="deleteBatch">
+    	DELETE FROM app_comment WHERE id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+    </delete>
+    
+    <insert id="save" parameterType="GoodsComment">
+    	INSERT INTO app_comment
+    	(
+    		`id`,
+    		`order_id`,
+    		`customer_id`,
+    		`shop_id`,
+    		`goods_id`,
+    		`star`,
+    		`comment`,
+    		`images`
+    	) 
+    	VALUES
+    	(
+    		#{id},
+    		#{orderId},
+    		#{customerId},
+    		#{shopId},
+    		#{goodsId},
+    		#{star},
+    		#{comment},
+    		#{images}
+    	)
+    </insert>
+</mapper>  

@@ -1,0 +1,27 @@
+GET http://passport.wanmei.com/api/wxjs.do?method=auth&jsonpCallback=wx.auth_jsonp&url=http%3A%2F%2Fevent.wanmei.com%2Fcsgo%2Fwxplatform%2Findex%3Fparam%3D1&aid=3 HTTP/1.1
+Host: passport.wanmei.com
+Accept: */*
+Connection: keep-alive
+Connection: keep-alive
+Cookie: __mtxcar=(direct):(none); __mtxsd=dacfbccf.1517303973187.0.1; __mtxud=3f930e11fba3f8ca.1509439473214.1517222149074.1517303973182.66; sd=Z_mT626EeNkoe23Tf3q5YK0xDAKLwQdDjtE7IWbwWnfbBhc7phJL1aGcw8KLsRTkm0iZaPFB-yCa_G9_qZb-SxHEZM9VGhXLKDvJ4Gl6eHA; uuid=NIRUoO5ET8O2IQIhySKI_g; wx_pw=oZDRm43JsKy6pujw532iBj13g1uS*ix9QjfuOk5A8XpZ3fQjfyY7Id1w24T9Xci42yZTnjcbvhfG6ykaNmZLJCh3PC-IkQ73o-FZpnEfrQqvKb4ji0LRIz6PdMvpFnea2XfMIvAfzY70ubXz5LmiRAutbx4qafzMbIFrsWFPd-RciRO2loe4xaLxAzN*cx*Pz*anL6BQoJHsXxrl58fIESuGCS-UIEsA84sG4X850Vh8qiytL5Q-AqFEzHSfC09aP*xqUBTdUtns9bYB4Jw4aeuxCreddim*LZ4oHuyNETDIyflGTWWStMQ90Oh9FI5Q; __mtxsr=csr:(direct)|cdt:(direct)|advt:(none)|camp:(none)
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C202 MicroMessenger/6.5.20 NetType/WIFI Language/zh_CN
+Accept-Language: zh-cn
+Referer: http://event.wanmei.com/csgo/wxplatform/index?param=1
+Accept-Encoding: gzip, deflate
+
+
+HTTP/1.1 302 Moved Temporarily
+Server: nginx
+Date: Tue, 30 Jan 2018 14:25:56 GMT
+Content-Type: text/html
+Content-Length: 154
+Connection: keep-alive
+Location: https://passport.wanmei.com/api/wxjs.do?method=auth&jsonpCallback=wx.auth_jsonp&url=http%3A%2F%2Fevent.wanmei.com%2Fcsgo%2Fwxplatform%2Findex%3Fparam%3D1&aid=3
+
+<html>
+<head><title>302 Found</title></head>
+<body bgcolor="white">
+<center><h1>302 Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>

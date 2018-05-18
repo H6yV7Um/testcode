@@ -1,0 +1,7 @@
+-- 批量插入门店负责人表md_person_record
+insert into md_person_record (user_id,user_name, user_phone, status, create_time, update_time, shop_code, shop_name, 
+region_code, region_name, company_code, company_name)
+select '15040992' as user_id, 'yinzx' as user_name, '13681028312' as user_phone, 1 as status, now() as create_time, now() as update_time, 
+id as shop_code, name as shop_name, region_code as region_code, region_name as region_name, company_code as company_code,
+company_name as company_name 
+from md_position_detail

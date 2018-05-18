@@ -1,0 +1,10 @@
+syntax="proto3";
+
+package lbs;
+
+message GetAccAddrC2S
+{
+    uint32  cli_type        = 1;
+    bytes   device_id       = 2;
+    string  app_id          = 3;
+}

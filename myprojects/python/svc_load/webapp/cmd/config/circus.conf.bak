@@ -1,0 +1,7 @@
+#put this file to /etc/init/
+#after reboot you can op circus like service circus start|stop|restart
+start on filesystem and net-device-up IFACE=lo
+stop on runlevel [016]
+
+respawn
+exec /opt/venv_python2.7.13/bin/circusd /opt/svc_load/webapp/circusd.ini

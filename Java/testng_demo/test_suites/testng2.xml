@@ -1,0 +1,37 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<!-- 一个xml文件中只能定义一个suite根元素，多个测试suite需要定义多个xml文件 -->
+<suite name="Suite2" verbose="1" >
+	<test name="Regression1">
+		<!-- groups标签必须定义在packages或classes标签之前，否则编辑器会提示错误 -->
+		<groups>
+ 			<!-- 利用define定义一个分组集合，包含了测试代码中定义的实际分组 -->
+ 			<define name="all">
+ 				<include name="p0"/>
+ 				<include name="p1"/>
+ 				<include name="p2"/>
+ 				<include name="p3"/>
+ 			</define>
+ 			<define name="p12">
+ 				<include name="p1"/>
+ 				<include name="p2"/>
+ 			</define>
+ 			<run>
+ 				<include name="p12"/>
+ 			</run>
+ 		</groups>
+    	<packages>
+			<!-- 该包下所有的testNG测试类都会执行 -->
+      		<package name="com.vdcoding.testngDemo.tests" />
+   		</packages>
+   		
+ 	</test>
+ 	<test name="Regression2">
+ 		<classes>
+ 			<!-- 只执行声明的类中的所有测试方法 -->
+ 			<class name="com.vdcoding.testngDemo.tests.StandardTest"></class>
+ 		</classes>
+ 	</test>
+ 	<test name="notest"></test>
+</suite>
+
+

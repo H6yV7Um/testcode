@@ -1,0 +1,32 @@
+﻿问题：
+1、在非bean组件的普通pojo类中，如果想使用注册为spring组件的服务，则需要通过Spring的ApplicationContext的getBean方法来获取
+可以通过定义一个工具类来获取ApplicationContext，之后再获取想要的service bean。例子可参考SpringContextUtils
+
+2、通过Spring context获取不到相应的service bean，原因是起初的service都是直接定义的类，没有通过继承接口来实现
+以下是网上获取的解释
+关键点：
+LoginService loginService = (LoginServiceImpl) this.applicationContext.getBean("loginService");
+
+改成以下，测试成功：
+LoginService loginService = (LoginService) this.applicationContext.getBean("loginService");
+
+注意：
+需要把获取的bean强制成接口类型即可，之前我的LoginService不是接口，是一个具体实现类，怎么找方法都测试不通过，通过调查发现Spring的Cglib动态代理，如果接口没有做任何继承，是通过Cglib得到实例的，如何你的接口有继承关系存在，就是能过JDK的动态proxy去完成。Spring框架的applicationContext.getBean()实例的获取是基于接口Prototype响应机制的。你们看看框架源码就知道了。
+
+3、mybatis的xml mapper中尽量不要使用<cache/>，否则会涉及到序列化等操作，引起不必要的麻烦
+
+
+
+
+
+
+
+https://www.easy-mock.com/mock/5ab7c9627a7afd3099d16b4c/customer/orders/count
+{"code":0,"data":{"orderId":0,"uuid":"L20180314154452882301681","customerId":447,"status":6,"dealPrice":0.01,"finalPrice":0.01,"couponUsedId":0,"message":null,"address":"福建省福州市连江县文笔西路连江人民广场133","receiveName":"$cname","receivePhone":"13700000000","shopId":3,"shopName":"连江日用品专营店","paymentType":1,"orderTime":"2018-03-14 15:44:25","paymentTime":"2018-03-14 15:45:17","sendedTime":"2018-03-14 15:45:29","closeTime":null,"updateTime":"2018-03-14 15:45:41","finishTime":null,"reqRefundTime":null,"refundTime":null,"takeOrderTime":null,"arrivedTime":null,"receivedTime":null,"postFee":0,"deliveryType":"CITY","couponPrice":0,"sellerNote":null,"formId":"the formId is a mock one","reduceFee":0,"orderType":10,"leAppid":3,"leId":0,"arriveTime":null,"discount":0,"discountPrice":0,"bonus":0,"bonusPrice":0,"memberId":122,"source":"CUSTOMER","onlinePayType":null,"orderGoodsInfos":[{"goodsId":63,"imageUrl":"http://img.leshare.shop/Flyd83Sbo1XMEg2Wp7Eg-iiBjlel","goodsName":"七度空间-冰感护垫薄荷香型超薄棉柔表层迷你卫生巾18片","goodsSku":"","goodsPrice":4.8,"goodsSellPrice":4.8,"count":1,"innerCid":21},{"goodsId":116,"imageUrl":"http://img.leshare.shop/Ft5OGx3eZTjPYbDtldxc2PZakEdJ","goodsName":"波斯猫名典迷你加香型手帕纸10包","goodsSku":"","goodsPrice":3.5,"goodsSellPrice":3.5,"count":1,"innerCid":28}],"orderRefunds":[],"orderExpress":null,"customer":null,"orderCloseNote":null,"orderPriceHistory":[{"orderId":357,"currentPrice":8.3,"modifyPrice":0.01,"currentPost":0,"modifyPost":0,"currentUUID":"L20180314154425626915765","modifyUUID":"L20180314154452882301681","finalPrice":0.01,"modifyTime":"2018-03-14 15:44:52","remark":null}]}}
+
+
+
+
+https://www.easy-mock.com/mock/5ab7c9627a7afd3099d16b4c/customer/layout/pages/1
+
+{"code":0,"data":{"message":"{\"id\":11,\"name\":\"个人（日用品）\",\"type\":\"CUSTOM\",\"plugins\":[],\"components\":[{\"id\":98,\"type\":\"VIP_CARD\",\"pageId\":11,\"shopId\":3,\"seq\":1,\"title\":\"会员卡\",\"param\":\"\",\"data\":\"\",\"isUse\":true},{\"id\":103,\"type\":\"BALANCE_BAR\",\"pageId\":11,\"shopId\":3,\"seq\":2,\"title\":\"余额栏\",\"isUse\":true},{\"id\":102,\"type\":\"SEPARATOR\",\"pageId\":11,\"shopId\":3,\"seq\":3,\"title\":\"分隔符\",\"param\":\"{  "height": "10rpx",  "backgroundColor": "#F5F5F5",  "borderTop": true,  "borderBottom": false}\",\"isUse\":true},{\"id\":100,\"type\":\"ORDER_BAR\",\"pageId\":11,\"shopId\":3,\"seq\":4,\"title\":\"订单栏\",\"param\":\"\",\"isUse\":true},{\"id\":101,\"type\":\"SEPARATOR\",\"pageId\":11,\"shopId\":3,\"seq\":5,\"title\":\"分隔符\",\"param\":\"{  "height": "10rpx",  "backgroundColor": "#F5F5F5",  "borderTop": false,  "borderBottom": false}\",\"data\":\"\",\"isUse\":true},{\"id\":99,\"type\":\"NAV_GRID\",\"pageId\":11,\"shopId\":3,\"seq\":6,\"title\":\"我的工具\",\"param\":\"\",\"data\":\"[  [    {      "iconClass": "like",      "iconColor": "#f85",      "iconSize": "24px",      "title": "我的收藏",      "action": "FAVORITE",      "targetId": null    },    {      "iconClass": "address",      "iconColor": "#1296DB",      "iconSize": "24px",      "title": "常用地址",      "action": "ADDRESS",      "targetId": null    },    {      "iconClass": "coupon",      "iconColor": "#e33",      "iconSize": "24px",      "title": "优惠券",      "action": "COUPON_OWN",      "targetId": null    },    {      "iconClass": "receive-coupons",      "iconColor": "#008000",      "iconSize": "24px",      "title": "领取优惠券",      "action": "COUPON_PICK",      "targetId": null    }  ],  [    {      "iconClass": "bouns",      "iconColor": "#1296DB",      "iconSize": "24px",      "title": "积分中心",      "action": "MEMBER_BONUS",      "targetId": null    },    {      "iconClass": "privilege",      "iconColor": "#f85",      "iconSize": "24px",      "title": "会员特权",      "action": "MEMBER_DETAIL",      "targetId": null    },    {      "iconClass": "qrcode",      "iconColor": "#e33",      "iconSize": "24px",      "title": "会员码",      "action": "MEMBER_CODE",      "targetId": null    },    {      "iconClass": "edit",      "iconColor": "#008000",      "iconSize": "24px",      "title": "会员签到",      "action": "MEMBER_SIGN",      "targetId": null    }  ],  [    {      "iconClass": "inquire-store",      "iconColor": "#f85",      "iconSize": "24px",      "title": "在线商城",      "action": "GOODS_ALL",      "targetId": null    },    {      "iconClass": "service",      "iconColor": "#008000",      "iconSize": "24px",      "title": "客服中心",      "action": "CONTACT",      "openType": "contact",      "targetId": null    },    {      "iconClass": "call",      "iconColor": "#e33",      "iconSize": "24px",      "title": "电话咨询",      "action": "PHONE",      "targetId": "18759161561"    },    {      "iconClass": "share",      "iconColor": "#1296DB",      "iconSize": "24px",      "title": "邀请好友",      "openType": "share",      "action": "SHARE",      "targetId": null    }  ],  [    {      "iconClass": "address",      "iconColor": "#1296DB",      "iconSize": "24px",      "title": "店铺信息",      "action": "SHOP_INFO",      "targetId": null    },    {      "iconClass": "groups",      "iconColor": "#008000",      "iconSize": "24px",      "title": "拼团活动",      "action": "PAGE_NAVIGATE",      "targetId": "/pages/group/list"    },    {      "iconClass": "chat",      "iconColor": "#e33",      "iconSize": "24px",      "title": "我的评论",      "action": "COMMENT_LIST",      "targetId": null    },    {      "iconClass": "distribution",      "iconColor": "#f85",      "iconSize": "24px",      "title": "分销中心",      "action": "COMMENT_LIST",      "targetId": null    }  ]]\",\"isUse\":true},{\"id\":104,\"type\":\"COPYRIGHT\",\"pageId\":11,\"shopId\":3,\"seq\":7,\"title\":\"版权信息\",\"isUse\":true}]}"}}

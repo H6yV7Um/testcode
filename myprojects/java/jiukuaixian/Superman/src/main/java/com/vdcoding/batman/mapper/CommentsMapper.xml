@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离   注意：使用mapper代理方法开发，namespace有特殊重要的作用  -->  
+<mapper namespace="com.vdcoding.batman.mapper.CommentsMapper">
+	<!-- 设置刷新缓存时间为30s -->
+	<cache flushInterval="30000"/>
+	
+    <select id="getComments" resultType="Comments">  
+        SELECT 
+		a.`id`,
+		a.`orderId`,
+		a.`customerId`,
+		a.`goodsId`,
+		a.`shopId`,
+		a.`comment`,
+		a.`star`,
+		a.`images`,
+		a.`createTime`,
+		a.`updateTime`,
+		b.`orderTime`,
+		c.`name` AS goods,
+		d.`name` AS customers
+		FROM comments a
+		LEFT JOIN orders b
+		ON b.id = a.`orderId`
+		LEFT JOIN goods c
+		ON b.`goodsId` = c.`id`
+		LEFT JOIN customer d
+		ON a.`customerId` = d.`id`
+		WHERE a.`goodsId` = #{goodsId}
+		LIMIT #{from},#{limit};
+    </select>
+    
+    <select id="getCommentsCount" parameterType="int" resultType="map">
+    	SELECT a.GOOD, b.NORMAL, c.BAD, d.ALL 
+		FROM 
+		(SELECT COUNT(1) AS GOOD, goodsId FROM comments WHERE star=5 AND goodsId=#{goodsId}) a
+		INNER JOIN
+		(SELECT COUNT(1) AS NORMAL, goodsId FROM comments WHERE star BETWEEN 3 AND 4 AND goodsId=#{goodsId}) b
+		INNER JOIN
+		(SELECT COUNT(1) AS BAD, goodsId FROM comments WHERE star BETWEEN 1 AND 2 AND goodsId=#{goodsId}) c
+		INNER JOIN
+		(SELECT COUNT(1) AS `ALL`, goodsId FROM comments WHERE goodsId=#{goodsId}) d;
+    </select>
+    <!-- <update id="updateUser" parameterType="User">
+    	UPDATE user SET username=#{username},sex=#{sex},address=#{address} WHERE id=#{id}
+    </update>
+    <insert id="addUser" parameterType="map">
+    	INSERT INTO user (username, sex, address) VALUES(#{username},#{sex},#{address})
+    </insert> -->
+</mapper>  

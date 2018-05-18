@@ -1,0 +1,51 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `Pr_music`$$
+Create Procedure Pr_music(Times int)
+     Begin         
+     -- 声明变量         
+     Declare Count int;                            -- 计数器
+	 
+	 -- --------------prenatal_admin_music-------------
+	 Declare _song_id 			bigint;
+	 Declare _title   			varchar(255);
+	 Declare _download_url 		varchar(255);
+	 Declare _cover_url 		varchar(255);
+	 Declare _artist 			varchar(200);
+	 Declare _album  			varchar(255);
+	 Declare _brief				varchar(2000);
+	 Declare _update_time		timestamp;
+	 Declare _operator			varchar(20);
+	 Declare _del_mark			smallint;
+	 Declare _objectId			varchar(32);
+	
+
+     set Count=1;
+																			-- 初始化计数器
+     set _song_id=1000000;
+    
+     -- 循环体
+     While Count<(Times+1) do
+     -- BEGIN
+			
+		set _song_id=_song_id+1;
+		set _title=concat('歌曲名称',UUID());
+		set _objectId=cast(round(RAND()*8999999999999999+1000000000000000) as char);
+		set _download_url=concat('http://d3sit.cnsuning.com/download/rbtj/24.mp3?objectId=',_objectId,'&requestId=',UUID(),'&salAccessKeyId=wsamtUfiaBbwBGIF');
+		set _cover_url=concat('http://10.19.250.38:81/uimg/rbfm/songBig/',_objectId,'.jpg');
+		set _artist=UUID();
+		set _album=UUID();
+		set _brief=UUID();
+		set _update_time=DATE_ADD(NOW() ,INTERVAL  -200+ROUND(RAND()*200) day);
+		set _del_mark=1;
+		
+
+		  
+		 insert into prenatal_admin_music(song_id,title,download_url,cover_url,artist,album,brief,update_time,del_mark,object_id)
+		 values(_song_id,_title,_download_url,_cover_url,_artist,_album,_brief,_update_time,_del_mark,_objectId);
+		 
+     set Count=Count+1;        
+     end WHILE;
+         
+     End $$
+DELIMITER ;

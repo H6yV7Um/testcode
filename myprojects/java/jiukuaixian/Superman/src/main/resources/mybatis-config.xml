@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+  
+    <!-- 全局配置参数，需要时再设置 -->  
+    <settings>  
+      <setting name="defaultStatementTimeout" value="5"/>
+      <setting name="logImpl" value="LOG4J"/>
+      <setting name="cacheEnabled" value="true"></setting>
+      <setting name="localCacheScope" value="STATEMENT"></setting>
+      <setting name="mapUnderscoreToCamelCase" value="true"></setting>
+    </settings>
+      
+    <!-- 别名定义 -->  
+    <typeAliases>  
+        <!-- 针对单个类定义别名,别名只针对xml中的引用生效-->  
+        <!-- <typeAlias type="com.vdcoding.batman.mapper.UserMapper" alias="usermapper"/> -->
+        <!-- 批量别名定义   指定包名，mybatis自动扫描包中的po类，自动定义别名，别名就是类名（首字母大写或小写都可以）  -->  
+        <package name="com.vdcoding.batman.pojos"/>  
+    </typeAliases>  
+      
+    <!-- 加载 映射文件 -->  
+    <mappers>  
+        <!-- 批量加载mapper，指定mapper接口的包名，mybatis自动扫描包下边所有mapper接口进行加载，需要将mapper接口类名和mapper.xml映射文件名称保持一致，且在一个目录中-->    
+        <package name="com.vdcoding.batman.mapper"/>  
+    </mappers>  
+      
+</configuration>  
